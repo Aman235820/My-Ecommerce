@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  overflow-x: hidden;
 }
 
 .App-logo {
@@ -58,12 +59,13 @@
 
 .sidebar-container {
   top: 0;
-  width: 180px;
-  height: 100vh;
+  min-height: 100vh;
   color: #fff;
   padding: 20px 0;
   position: sticky;
-  background-color: #0065FF;
+  background-color: rgb(153, 153, 153);
+  height: auto;
+  flex: 250px;
 
   /*.sidebar-menu {
       margin: 0;
@@ -90,13 +92,24 @@
 }
 
 .content-wrapper {
-  flex: 1;
+  flex: 100%;
+  flex-direction: column;
 }
 
 #navs{
    padding: 8px 30px 8px 30px;
+   position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    left: 208px;
+    margin: auto;
+    width: auto;
 }
-
+.card{
+  min-height: 500px;
+  height: auto;
+}
 
 
 

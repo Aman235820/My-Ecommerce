@@ -9,3 +9,20 @@ export const GetData = async ()=>{
          console.log(error);
     }
 }
+
+export const GetProducts = async ()=>{
+     try{
+          const endpoint = "https://fakestoreapi.com/products/";
+          let res = await axios.get(endpoint);
+
+          if(res && res.data){
+                return res.data;
+          }
+          else{
+               throw Error("Products not found");
+          }
+     }
+     catch(error){
+        console.error(error);
+     }
+}
