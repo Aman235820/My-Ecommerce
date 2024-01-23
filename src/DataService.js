@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAllProducts } from "./redux/slices/masterSlice";
 
 export const GetData = async ()=>{
     try{
@@ -10,13 +11,13 @@ export const GetData = async ()=>{
     }
 }
 
-export const GetProducts = async ()=>{
+export const GetProducts = async (dispatcher)=>{
      try{
           const endpoint = "https://fakestoreapi.com/products/";
           let res = await axios.get(endpoint);
 
           if(res && res.data){
-                return res.data;
+                 dispatcher(getAllProducts(res.data));
           }
           else{
                throw Error("Products not found");

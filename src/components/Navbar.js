@@ -38,6 +38,10 @@ export default function Navbar() {
                         <Link className="nav-link" to="#" onClick={()=>{setProductCategory(4)}}>Electronics</Link>
                     </li>
 
+                    <li className="nav-item">
+                        <Link className="nav-link" to="#" onClick={()=>{setProductCategory(5)}}>Others</Link>
+                    </li>
+
                     {/* <li className="nav-item">
                         <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                     </li> */}

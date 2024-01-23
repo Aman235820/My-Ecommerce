@@ -4,20 +4,40 @@ import SideBar from './SideBar';
 import Navbar from './Navbar';
 import { GetProducts } from '../DataService';
 import Products from './Products';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Profile() {
+
+    const dispatch = useDispatch();
 
     const { user, productCategory } = useContext(AuthContext);
     const [products, setProducts] = useState([]);
     const [loader, setLoading] = useState(false);
 
-    useEffect(() => {
-        fetchAllProducts(productCategory);
-    }, [productCategory]);
 
-    const fetchAllProducts = async (category) => {
+    useEffect(() => {
+        async function fetchData() {
+            setLoading(true);
+            await GetProducts(dispatch);
+            setLoading(false);
+        }
+        fetchData();
+    }, []);
+
+    let productData = useSelector((state) => {
+        return (state.allProducts).allProducts;
+    });
+
+
+    useEffect(() => {
+        fetchSelectedProducts(productCategory);
+    }, [productCategory , productData]);
+
+
+    const fetchSelectedProducts = (category) => {
         setLoading(true);
-        let res = await GetProducts();
+        let res = productData;
+       
         if (category == 2) {
             res = res.filter(item => item.category == "men's clothing");
         }
@@ -27,9 +47,16 @@ function Profile() {
         else if (category == 4) {
             res = res.filter(item => item.category == "electronics")
         }
+        else if(category==5){
+            res = res.filter(item => !(item.category == "men's clothing" ||  item.category == "women's clothing" || item.category == "electronics" ))
+        }
 
         setProducts(res);
         setLoading(false);
+    }
+
+    const openProductDetailsModal = ()=>{
+           console.log("Modal opened");
     }
 
 
@@ -52,14 +79,15 @@ function Profile() {
                             )
                         }
 
-                        { !loader && <div className="row p-5 my-3">
+                        {!loader && <div className="row p-5 my-3">
                             {
                                 products.map(item => {
                                     return (
                                         <div className="col-3 p-3">
                                             <Products key={item.id} title={item.title}
                                                 image={item.image}
-                                                desc={item.description.length > 100 ? item.description.slice(0, 100) + "....Read More" : item.description}
+                                                desc={item.description}
+                                                openProductDetailsModal = {openProductDetailsModal}
                                             ></Products>
                                         </div>)
                                 })
