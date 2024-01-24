@@ -66,29 +66,6 @@
   background-color: rgb(153, 153, 153);
   height: auto;
   flex: 250px;
-
-  /*.sidebar-menu {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-
-      li {
-          cursor: pointer;
-          padding: 10px 15px;
-          transition: ease all 0.4s;
-          border-left: 4px solid #0065FF;
-
-          &:hover {
-              background-color: #0457d7;
-              border-left: 4px solid #fff;
-          }
-
-          &.active {
-              background-color: #fff;
-          }
-      } 
-    }*/
-
 }
 
 .content-wrapper {
@@ -111,6 +88,26 @@
   height: auto;
 }
 
+
+.modal-wrapper{
+     position: fixed;
+     left: 0;
+     right: 0;
+     top: 0;
+     bottom: 0;
+     background-color: rgb(183, 183, 183 , 0.9);
+}
+
+.modal-container{
+       position: fixed;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50% , -50%);
+       max-width: 30rem;
+       background-color: #ffffff;
+       padding: 2rem  2rem;
+       border-radius: 0.5rem;
+}
 
 
 

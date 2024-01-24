@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import { GetProducts } from '../DataService';
 import Products from './Products';
 import { useDispatch, useSelector } from 'react-redux';
+import ProductModal from './modals/ProductModal';
 
 function Profile() {
 
@@ -13,7 +14,8 @@ function Profile() {
     const { user, productCategory } = useContext(AuthContext);
     const [products, setProducts] = useState([]);
     const [loader, setLoading] = useState(false);
-
+    const [showModal, setShowModal] = useState(false);
+    const [productModalID, setProductModalID] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -31,13 +33,18 @@ function Profile() {
 
     useEffect(() => {
         fetchSelectedProducts(productCategory);
-    }, [productCategory , productData]);
+    }, [productCategory, productData]);
+
+
+
+    const closeModal = () => { setShowModal(false); }
+
 
 
     const fetchSelectedProducts = (category) => {
         setLoading(true);
         let res = productData;
-       
+
         if (category == 2) {
             res = res.filter(item => item.category == "men's clothing");
         }
@@ -47,21 +54,30 @@ function Profile() {
         else if (category == 4) {
             res = res.filter(item => item.category == "electronics")
         }
-        else if(category==5){
-            res = res.filter(item => !(item.category == "men's clothing" ||  item.category == "women's clothing" || item.category == "electronics" ))
+        else if (category == 5) {
+            res = res.filter(item => !(item.category == "men's clothing" || item.category == "women's clothing" || item.category == "electronics"))
         }
 
         setProducts(res);
         setLoading(false);
     }
 
-    const openProductDetailsModal = ()=>{
-           console.log("Modal opened");
+
+    const mainProductModal = (
+
+        <ProductModal productId={productModalID} closeModal={closeModal}></ProductModal>
+    );
+
+    const openProductDetailsModal = (id) => {
+        setProductModalID(id);
+        setShowModal(true);
     }
 
 
     return (
         <>
+            {showModal && mainProductModal}
+
             <div className="dashboard-wrapper">
                 <SideBar Name={user?.userData?.Name}
                     Age={user?.userData?.Age}
@@ -84,10 +100,12 @@ function Profile() {
                                 products.map(item => {
                                     return (
                                         <div className="col-3 p-3">
-                                            <Products key={item.id} title={item.title}
+                                            <Products key={item.id}
+                                                id={item.id}
+                                                title={item.title}
                                                 image={item.image}
                                                 desc={item.description}
-                                                openProductDetailsModal = {openProductDetailsModal}
+                                                openProductDetailsModal={openProductDetailsModal}
                                             ></Products>
                                         </div>)
                                 })
