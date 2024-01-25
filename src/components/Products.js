@@ -1,13 +1,36 @@
-import { Link } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useContext , useEffect } from 'react';
+import { useDispatch , useSelector } from 'react-redux';
 import { addProduct } from '../redux/slices/cartSlice';
+import AuthContext from "../context/AuthProvider";
 
 export default function Products(props) {
 
   const dispatch = useDispatch();
+  const {user} = useContext(AuthContext);
+  const productData = useSelector((state)=>{
+        return (state.allProducts).allProducts;
+  });
+
+  const myCart = useSelector((state)=>{
+        return state.cartItems.cartArray;
+  });
+
+  useEffect(()=>{
+    console.log(myCart);
+  },[myCart])
 
   const openProductModal = (id) => {
     props.openProductDetailsModal(id);
+  }
+
+  const addProductTocart = (id)=>{
+      const product = productData.filter(item=> item.id == id);
+      let cartObj = {
+           "user" : user?.userData?.Email,
+           "product" : product[0]
+      }
+
+      dispatch(addProduct(cartObj));
   }
 
   const truncatedDescription = (
@@ -23,7 +46,7 @@ export default function Products(props) {
         <div className="card-body">
           <h6 className="card-title">{props.title}</h6>
           <p className="card-text">{props.desc.length > 150 ? truncatedDescription : props.desc}</p>
-            <Link to="#" className="btn btn-primary">Add to Cart</Link>
+            <button className="btn btn-primary" onClick={ ()=>addProductTocart(props.id)}>Add to Cart</button>
             <br/>
             <br/>
             <button className="btn btn-warning" onClick={() => { openProductModal(props.id) }}>View Item</button>
