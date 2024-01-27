@@ -6,6 +6,7 @@ import { GetProducts } from '../DataService';
 import Products from './Products';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductModal from './modals/ProductModal';
+import { addProduct } from '../redux/slices/cartSlice';
 
 function Profile() {
 
@@ -26,9 +27,17 @@ function Profile() {
         fetchData();
     }, []);
 
-    let productData = useSelector((state) => {
+    const productData = useSelector((state) => {
         return (state.allProducts).allProducts;
     });
+
+    // let myCart = useSelector((state) => {
+    //     return (state.cartItems).cartArray;
+    // });
+
+    // useEffect(() => {
+    //     console.log(myCart);
+    // }, [myCart]);
 
 
     useEffect(() => {
@@ -64,7 +73,6 @@ function Profile() {
 
 
     const mainProductModal = (
-
         <ProductModal productId={productModalID} closeModal={closeModal}></ProductModal>
     );
 
@@ -73,13 +81,22 @@ function Profile() {
         setShowModal(true);
     }
 
+    const addProductTocart = (id) => {
+        const product = productData.filter(item => item.id == id);
+        let cartObj = {
+            "user": user?.userData?.Email,
+            "product": product[0]
+        }
+        dispatch(addProduct(cartObj));
+    }
 
     return (
         <>
             {showModal && mainProductModal}
 
             <div className="dashboard-wrapper">
-                <SideBar Name={user?.userData?.Name}
+                <SideBar  style={{position:"sticky" , top : 0}}
+                    Name={user?.userData?.Name}
                     Age={user?.userData?.Age}
                     Gender={user?.userData?.Gender}
                     Pincode={user?.userData?.Pincode}
@@ -106,6 +123,7 @@ function Profile() {
                                                 image={item.image}
                                                 desc={item.description}
                                                 openProductDetailsModal={openProductDetailsModal}
+                                                addProductTocart={addProductTocart}
                                             ></Products>
                                         </div>)
                                 })

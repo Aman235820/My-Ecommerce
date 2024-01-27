@@ -24,22 +24,22 @@ export default function Navbar() {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item active">
-                        <Link className="nav-link" to="#" onClick={()=>{setProductCategory(1)}}>Home</Link>
+                        <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(1)}}>Home</Link>
                     </li>
                     <li className="nav-item">
-                        <Link className="nav-link" to="#"  onClick={()=>{setProductCategory(2)}}>Men's</Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link className="nav-link" to="#" onClick={()=>{setProductCategory(3)}}>Women's</Link>
+                        <Link className="nav-link" to="/profile"  onClick={()=>{setProductCategory(2)}}>Men's</Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link" to="#" onClick={()=>{setProductCategory(4)}}>Electronics</Link>
+                        <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(3)}}>Women's</Link>
                     </li>
 
                     <li className="nav-item">
-                        <Link className="nav-link" to="#" onClick={()=>{setProductCategory(5)}}>Others</Link>
+                        <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(4)}}>Electronics</Link>
+                    </li>
+
+                    <li className="nav-item">
+                        <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(5)}}>Others</Link>
                     </li>
 
                     {/* <li className="nav-item">
@@ -48,7 +48,7 @@ export default function Navbar() {
                 </ul>
                 <div className="ms-auto margin-auto">
                     <li className="nav-item">
-                        <Link to="#"><img src="cart.png" height="30px" width="30px" /></Link>
+                        <Link to="/myCart"><img src="cart.png" height="30px" width="30px" /></Link>
                     </li>
                 </div>
                 <div>
