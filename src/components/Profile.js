@@ -17,6 +17,7 @@ function Profile() {
     const [loader, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [productModalID, setProductModalID] = useState(null);
+    const [userCart, setUserCart] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -31,13 +32,14 @@ function Profile() {
         return (state.allProducts).allProducts;
     });
 
-    // let myCart = useSelector((state) => {
-    //     return (state.cartItems).cartArray;
-    // });
+    let myCart = useSelector((state) => {
+        return (state.cartItems).cartArray;
+    });
 
-    // useEffect(() => {
-    //     console.log(myCart);
-    // }, [myCart]);
+    useEffect(() => {
+        let cart = myCart.filter(item => item.user == user?.userData?.Email).map((item) => item.product);
+        setUserCart(cart);
+    }, [myCart]);
 
 
     useEffect(() => {
@@ -95,7 +97,7 @@ function Profile() {
             {showModal && mainProductModal}
 
             <div className="dashboard-wrapper">
-                <SideBar  style={{position:"sticky" , top : 0}}
+                <SideBar style={{ position: "sticky", top: 0 }}
                     Name={user?.userData?.Name}
                     Age={user?.userData?.Age}
                     Gender={user?.userData?.Gender}
