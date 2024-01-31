@@ -50,7 +50,7 @@ function Login() {
 
     return (
         <div className="loginbox">
-            <div className="container border 3px shadow 3px">
+            <div className="container border">
                 <form>
                     <div className="form-group">
                         <label htmlFor="exampleInputEmail1">Email address</label>

@@ -37,7 +37,7 @@
 }
 
 .loginbox{
-  margin : -50px;
+  margin-bottom : 20px;
 }
 
 .container {
@@ -46,6 +46,9 @@
   padding: 50px;
   text-align: left;
   border-radius: 15px;
+  box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.15)
 }
 
 .error {
@@ -96,6 +99,8 @@
      top: 0;
      bottom: 0;
      background-color: rgb(183, 183, 183 , 0.9);
+     z-index: 11;
+     text-align: center;
 }
 
 .modal-container{
@@ -108,7 +113,9 @@
        padding: 2rem  2rem;
        border-radius: 0.5rem;
 }
-
+.modal-wrapper p{
+  text-transform: capitalize;
+}
 
 
 @keyframes App-logo-spin {
