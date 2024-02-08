@@ -6,7 +6,7 @@ import { GetProducts } from '../DataService';
 import Products from './Products';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductModal from './modals/ProductModal';
-import { addProduct } from '../redux/slices/cartSlice';
+import { addProduct, updateProductQuantity } from '../redux/slices/cartSlice';
 
 function Profile() {
 
@@ -18,6 +18,8 @@ function Profile() {
     const [showModal, setShowModal] = useState(false);
     const [productModalID, setProductModalID] = useState(null);
     const [userCart, setUserCart] = useState(null);
+
+    const userEmailID = user?.userData?.Email;
 
     useEffect(() => {
         async function fetchData() {
@@ -37,7 +39,7 @@ function Profile() {
     });
 
     useEffect(() => {
-        let cart = myCart.filter(item => item.user == user?.userData?.Email).map((item) => item.product);
+        let cart = myCart.filter(item => item.user == userEmailID).map((item) => ({ product: item.product, quantity: Number(item.quantity) }));
         setUserCart(cart);
     }, [myCart]);
 
@@ -47,10 +49,7 @@ function Profile() {
     }, [productCategory, productData]);
 
 
-
     const closeModal = () => { setShowModal(false); }
-
-
 
     const fetchSelectedProducts = (category) => {
         setLoading(true);
@@ -84,12 +83,27 @@ function Profile() {
     }
 
     const addProductTocart = (id) => {
-        const product = productData.filter(item => item.id == id);
-        let cartObj = {
-            "user": user?.userData?.Email,
-            "product": product[0]
+
+        let quantity = Number(userCart.filter(item => item.product.id == id).map(item => item.quantity));
+
+        quantity = quantity == 0 || quantity == null ? Number(1) : quantity++;
+
+        console.log(quantity);
+
+        if (quantity >= 1) {
+            console.log("quantity more than 1");
         }
-        dispatch(addProduct(cartObj));
+        else {
+            const itemToAdd = productData.filter(item => item.id == id);
+            let cartObj = {
+                "user": userEmailID,
+                "product": itemToAdd[0],
+                "quantity": 1
+            }
+            dispatch(addProduct(cartObj));
+        }
+        //console.log(userCart);
+
     }
 
     return (

@@ -3,7 +3,8 @@ import SideBar from "./SideBar";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthProvider";
 import DataTable from "react-data-table-component";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeProduct } from "../redux/slices/cartSlice";
 
 export default function MyCart() {
 
@@ -11,7 +12,11 @@ export default function MyCart() {
     const [data, setData] = useState([]);
     const [records , setRecords] = useState(data);
 
+    const dispatch = useDispatch();
+
     const selectedProducts = useSelector((state) => (state.cartItems).cartArray);
+
+    const email = user?.userData?.Email;
 
     useEffect(()=>{
         setRecords(data);
@@ -19,6 +24,7 @@ export default function MyCart() {
 
     useEffect(() => {
         fetchAllProducts();
+        console.log(selectedProducts);
     }, [selectedProducts]);
 
     const columns = [
@@ -38,20 +44,31 @@ export default function MyCart() {
             name: "Quantitiy",
             selector: row => row.quantity,
             sortable: true
+        },
+        {
+            name : "Remove Items",
+            selector : row => <img src="bin.png" height="20px" width="20px" alt="img" onClick={()=>deleteProduct(row.id , email)}/>
         }
+
     ];
 
+   const deleteProduct = (id , emailID)=>{
+        let index = selectedProducts.findIndex(obj=> obj.user == emailID && obj.product.id == id);
+        dispatch(removeProduct(index));
+   }
+
     const fetchAllProducts = () => {
-        const cartProducts = selectedProducts.filter(item => item.user == user?.userData?.Email);
+        const cartProducts = selectedProducts.filter(item => item.user == email);
 
         const productData = cartProducts.map(mapProductsToData);
 
         function mapProductsToData(item) {
             let obj = {
+                id : item.product.id,
                 image: item.product.image,
                 name: item.product.title,
                 price: item.product.price,
-                quantity: 1
+                quantity: item.quantity
             }
             return obj;
         }
