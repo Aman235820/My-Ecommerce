@@ -6,7 +6,7 @@ import { GetProducts } from '../DataService';
 import Products from './Products';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductModal from './modals/ProductModal';
-import { addProduct, updateProductQuantity } from '../redux/slices/cartSlice';
+import { addProduct, updateProductQuantity , removeProduct } from '../redux/slices/cartSlice';
 
 function Profile() {
 
@@ -52,7 +52,6 @@ function Profile() {
     const closeModal = () => { setShowModal(false); }
 
     const fetchSelectedProducts = (category) => {
-        setLoading(true);
         let res = productData;
 
         if (category == 2) {
@@ -69,7 +68,6 @@ function Profile() {
         }
 
         setProducts(res);
-        setLoading(false);
     }
 
 
@@ -82,16 +80,13 @@ function Profile() {
         setShowModal(true);
     }
 
-    const addProductTocart = (id) => {
+     const addProductTocart = (id) => {
 
         let quantity = Number(userCart.filter(item => item.product.id == id).map(item => item.quantity));
+        quantity = quantity == 0 || quantity == null ? Number(1) : quantity+1;
 
-        quantity = quantity == 0 || quantity == null ? Number(1) : quantity++;
-
-        console.log(quantity);
-
-        if (quantity >= 1) {
-            console.log("quantity more than 1");
+        if (quantity > 1) {
+            dispatch(updateProductQuantity({quantity , id , userEmailID}));
         }
         else {
             const itemToAdd = productData.filter(item => item.id == id);
@@ -102,8 +97,22 @@ function Profile() {
             }
             dispatch(addProduct(cartObj));
         }
-        //console.log(userCart);
+    }
 
+    const removeProductFromCart = (id)=>{
+        let index = myCart.findIndex(obj => obj.user == userEmailID && obj.product.id == id);
+        dispatch(removeProduct(index));
+    }
+
+    const deleteProduct = (id) => {
+        let quantity = Number(userCart.filter(item => item.product.id == id).map(item => item.quantity));
+        quantity = quantity > 1 ? Number(quantity - 1) : 0;
+        if (quantity == 0) {
+            removeProductFromCart(id);
+        }
+        else {
+            dispatch(updateProductQuantity({ quantity, id, userEmailID }));
+        }
     }
 
     return (
@@ -138,8 +147,10 @@ function Profile() {
                                                 title={item.title}
                                                 image={item.image}
                                                 desc={item.description}
+                                                quantity={userCart.filter(obj=> obj.product.id == item.id).map(obj=> Number(obj.quantity))}
                                                 openProductDetailsModal={openProductDetailsModal}
                                                 addProductTocart={addProductTocart}
+                                                deleteProduct={deleteProduct}
                                             ></Products>
                                         </div>)
                                 })

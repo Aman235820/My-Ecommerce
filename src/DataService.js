@@ -17,6 +17,7 @@ export const GetProducts = async (dispatcher)=>{
           let res = await axios.get(endpoint);
 
           if(res && res.data){
+                 (res.data).map(item=> {item.price = (Math.round(((item.price) * 83)*100)/100).toFixed(2)});
                  dispatcher(getAllProducts(res.data));
           }
           else{
