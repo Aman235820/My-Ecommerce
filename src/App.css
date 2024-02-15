@@ -100,7 +100,6 @@
      bottom: 0;
      background-color: rgb(183, 183, 183 , 0.9);
      z-index: 11;
-     text-align: center;
 }
 
 .modal-container{
@@ -114,7 +113,10 @@
        border-radius: 0.5rem;
 }
 .modal-wrapper p{
-  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
 }
 
 

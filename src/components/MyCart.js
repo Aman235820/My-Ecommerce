@@ -6,12 +6,14 @@ import DataTable from "react-data-table-component";
 import { useDispatch, useSelector } from "react-redux";
 import { removeProduct, updateProductQuantity } from "../redux/slices/cartSlice";
 import { emptyUserCart } from "../redux/actions";
+import ProceedToBuy from "./modals/ProceedtoBuyModal";
 
 export default function MyCart() {
 
     const { user } = useContext(AuthContext);
     const [data, setData] = useState([]);
     const [records, setRecords] = useState(data);
+    const [showModal, setShowModal] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -42,12 +44,12 @@ export default function MyCart() {
         },
         {
             name: "Quantitiy",
-            selector: row => <span><button className="btn btn-secondary" style={{ padding: '0 8px' }} onClick={() => addProduct(row.id)}>+</button>{row.quantity}<button className="btn  btn-secondary" style={{ padding: '0 9px' }} onClick={() => deleteProduct(row.id)}>-</button></span>,
+            selector: row => <span><button className="btn btn-secondary" style={{ padding: '0 8px' }} onClick={() => addProduct(row.id)}>+</button> {row.quantity} <button className="btn  btn-secondary" style={{ padding: '0 9px' }} onClick={() => deleteProduct(row.id)}>-</button></span>,
             sortable: true
         },
         {
             name: "Amount",
-            selector: row => <span>₹{(Math.round((row.quantity * row.price) * 100) / 100).toFixed(2)}</span>,
+            selector: row => <span>₹{row.amount}</span>,
             sortable: true
         },
         {
@@ -88,7 +90,8 @@ export default function MyCart() {
                 image: item.product.image,
                 name: item.product.title,
                 price: item.product.price,
-                quantity: item.quantity
+                quantity: item.quantity,
+                amount: (Math.round((item.quantity * item.product.price) * 100) / 100).toFixed(2)
             }
             return obj;
         }
@@ -108,8 +111,27 @@ export default function MyCart() {
     }
 
 
+    const OpenProceedToBuyModal = () => {
+        setShowModal(true);
+    }
+
+    const closeProccedtoBuyModal = () => {
+        setShowModal(false);
+    }
+
+    const proceedToBuy = (<>
+        <ProceedToBuy productDetails={data}
+            closeProccedtoBuyModal={closeProccedtoBuyModal}
+        ></ProceedToBuy>
+    </>);
+
+
+
     return (
         <>
+
+            {showModal && proceedToBuy}
+
             <div className="dashboard-wrapper">
                 <SideBar style={{ position: "sticky", top: 0 }}
                     Name={user?.userData?.Name}
@@ -132,7 +154,8 @@ export default function MyCart() {
                         pagination
                     />
                     {data && data.length != 0 && (<div className="justify-content-end">
-                        <button className="btn btn-danger w-25 justify-content-end" onClick={EraseCartItems}>Clear Cart</button>
+                        <button className="btn btn-danger btn-info justify-content-end" onClick={EraseCartItems}>Clear Cart</button>
+                        <button className="btn btn-info m-3" onClick={OpenProceedToBuyModal}>Procced To Buy</button>
                     </div>)}
                 </div>
             </div>

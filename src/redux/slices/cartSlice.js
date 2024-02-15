@@ -24,7 +24,6 @@ const cartSlice = createSlice({
     extraReducers(builder){
          builder.addCase(emptyUserCart , (state,action)=>{
                  let cart = (current(state.cartArray)).filter(item => !(item.user == action.payload));
-                 console.log(cart);
                  state.cartArray = cart;
          });
     }
