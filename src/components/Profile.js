@@ -133,7 +133,7 @@ function Profile() {
                     <div className='loader m-auto'>
                         {
                             loader && (
-                                <p className='m-0'>Loading...</p>
+                                <p className='m-0'><img src='loader.gif' width={60} height={60} alt='Loading...' /></p>
                             )
                         }
 

@@ -32,7 +32,7 @@ export default function MyCart() {
     const columns = [
         {
             name: "Item",
-            selector: row => <img height="50px" width="50px" src={row.image} alt="img" />
+            selector: row => <p className="p-2 m-0"> <img height="50px" width="50px" src={row.image} alt="img" /></p>
         },
         {
             name: "Name",
@@ -99,7 +99,6 @@ export default function MyCart() {
     }
 
     const EraseCartItems = () => {
-        console.log("Aman");
         dispatch(emptyUserCart(userEmailID));
     }
 
@@ -122,6 +121,7 @@ export default function MyCart() {
     const proceedToBuy = (<>
         <ProceedToBuy productDetails={data}
             closeProccedtoBuyModal={closeProccedtoBuyModal}
+            userEmailID = {userEmailID}
         ></ProceedToBuy>
     </>);
 
@@ -144,8 +144,8 @@ export default function MyCart() {
                     <Navbar></Navbar>
                     <br /><br /><br />
 
-                    <div className="ms-auto margin-auto">
-                        <input type="text" onChange={searchItem}></input>
+                    <div className="ms-auto" style={{marginRight: '20px'}}>
+                        <input type="text" className="search-bar" placeholder="Search..." onChange={searchItem}></input>
                     </div>
                     <DataTable
                         columns={columns}

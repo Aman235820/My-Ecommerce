@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
 import { useEffect, useState , useRef} from "react";
 import { useSelector } from "react-redux";
+import { getByDisplayValue } from "@testing-library/react";
 
 export default function ProductModal(props) {
 
@@ -43,7 +44,7 @@ export default function ProductModal(props) {
         <>
             <div className="modal-wrapper" >
                 <div className="modal-container" ref={closeModalRef}>
-                    <img src={myProduct.image} alt="img" height="150px" width="150px" />
+                    <img src={myProduct.image} alt="img" height="150px" width="150px" className="modal-img" />
                     <b><p>{myProduct.title}</p></b>
                     <p>{myProduct.description}</p>
                     <b><p>Price : ₹{myProduct.price}</p></b>

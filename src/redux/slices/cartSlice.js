@@ -4,7 +4,8 @@ import { emptyUserCart } from '../actions';
 const cartSlice = createSlice({
     name: "cartData",
     initialState: {
-        cartArray: []
+        cartArray: [],
+        checkoutItems: []
     },
     reducers: {
         addProduct(state, action) {
@@ -19,6 +20,9 @@ const cartSlice = createSlice({
               productArray[0].quantity=action.payload.quantity;
               let index = (current(state.cartArray)).findIndex(obj=> obj.user==action.payload.userEmailID && obj.product.id == action.payload.id);
               state.cartArray.splice(index , 1 ,  { user : action.payload.userEmailID , product : productArray[0].product ,  quantity: productArray[0].quantity});
+        },
+        addCheckoutItems(state, action){
+              (state.checkoutItems).push(action.payload);
         }
     },
     extraReducers(builder){
@@ -31,4 +35,4 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
-export const { addProduct , removeProduct , updateProductQuantity} = cartSlice.actions;
+export const { addProduct , removeProduct , updateProductQuantity , addCheckoutItems} = cartSlice.actions;
