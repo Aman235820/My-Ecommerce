@@ -4,7 +4,7 @@ import Profile from "./components/Profile";
 import { useEffect } from 'react';
 import AuthGuard from './guards/AuthGuard';
 import MyCart from './components/MyCart';
-
+import Checkout from "./components/Checkout";
 
 import {
   BrowserRouter,
@@ -26,6 +26,7 @@ function App() {
           <Route path="/" element={<Login />}></Route>
           <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
           <Route path="myCart" element = {<AuthGuard><MyCart/></AuthGuard>} />
+          <Route path="/checkoutPage" element={<AuthGuard><Checkout/></AuthGuard>}></Route>
         </Routes>
       </BrowserRouter>
 

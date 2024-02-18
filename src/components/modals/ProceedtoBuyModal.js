@@ -2,7 +2,7 @@ import { useEffect , useRef ,useState} from "react";
 import ReactDOM from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addCheckoutItems } from "../redux/slices/cartSlice";
+import { addCheckoutItems } from "../../redux/slices/cartSlice";
 
 
 export default function ProceedToBuy (props){
