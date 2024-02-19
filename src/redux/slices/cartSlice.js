@@ -23,6 +23,9 @@ const cartSlice = createSlice({
         },
         addCheckoutItems(state, action){
               (state.checkoutItems).push(action.payload);
+        },
+        removeCheckoutItems(state,action){
+            (state.checkoutItems).splice(0,(state.checkoutItems).length);
         }
     },
     extraReducers(builder){
@@ -35,4 +38,4 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
-export const { addProduct , removeProduct , updateProductQuantity , addCheckoutItems} = cartSlice.actions;
+export const { addProduct , removeProduct , updateProductQuantity , addCheckoutItems , removeCheckoutItems} = cartSlice.actions;

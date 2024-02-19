@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useContext, useState } from "react";
 import AuthContext from "../context/AuthProvider";
+import { removeCheckoutItems } from "../redux/slices/cartSlice";
 
 function Checkout() {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const cartCheckoutItems = useSelector((state) => {
         return (state.cartItems).checkoutItems;
@@ -19,31 +21,18 @@ function Checkout() {
         if (user?.Email == cartCheckoutItems?.userEmailID) {
             setUserDetails(user?.userData);
         }
-    },[]);
+    }, [cartCheckoutItems , user , userDetails]);
 
-    const { register, handleSubmit,setValue , formState: { errors }, setError } = useForm({
-        defaultValues: {
-            name: userDetails?.Name
-        }
-    });
+
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const handleCheckoutDetails = (data) => {
         console.log(data);
     }
 
-    const handleCustomNameChange = (e) => {
-        let value = e.target.value;
-        if (!(/^[a-zA-Z\s]+$/).test((value).trim())) {
-            setError("name", {
-                type: 'manual',
-                message: "Please enter valid name"
-            })
-        }
-        else {
-            setError("name", null);
-            setValue("name" , e.target.value)
-        }
-        return;
+    const goBacktoCart = () => {
+        dispatch(removeCheckoutItems());
+        navigate("/myCart");
     }
 
     return (
@@ -53,97 +42,110 @@ function Checkout() {
                     <nav className="navbar sticky navbar-expand-lg navbar-dark bg-dark">
                         <div className="container-fluid">
                             <span className="navbar-brand">Shoppers' Station</span>
-                            <button className="btn btn-outline-success" type="submit" onClick={() => { navigate("/myCart") }}>Go to Cart  <img src="cart.png" height="17px" width="17px" alt="cart" /></button>
+                            <button className="btn btn-outline-success" type="submit" onClick={() => goBacktoCart()}>Go to Cart  <img src="cart.png" height="17px" width="17px" alt="cart" /></button>
                         </div>
                     </nav>
-                    <div className="loginbox">
-                        <div className="container">
-                            <form onSubmit={handleSubmit(handleCheckoutDetails)}>
-                                <div className="form-row">
-                                    <div className="form-group col-md-6">
-                                        <label htmlFor="name">Name</label>
-                                        <input type="text" name="name" className="form-control"
-                                            {
-                                             ...register("name")
-                                            }
-                                            onChange={(e) => {
-                                                handleCustomNameChange(e);
-                                            }}
-                                        />
-                                        {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
-                                    </div>
-                                    <div className="form-group col-md-6">
-                                        <label htmlFor="email">Email</label>
-                                        <input type="text" name="email" className="form-control" placeholder="Optional"
-                                            {
-                                            ...register("email", {
-                                                validate: (value) => {
-                                                    if (!(value).includes("@") && value != "") {
-                                                        return "Enter valid email"
+                    <div className="row">
+                        <div className="checkout-form col-md-6 p-3">
+                            <div className="container">
+                                <form onSubmit={handleSubmit(handleCheckoutDetails)}>
+                                    <div className="row">
+                                        <div className="form-group col-md-6 mb-3">
+                                            <label htmlFor="name" className="mb-1">Name</label>
+                                            <input type="text" name="name" className="form-control" defaultValue={userDetails?.Name}
+                                                {
+                                                ...register("name", {
+                                                    required: "Please enter name",
+                                                    validate: (value) => {
+                                                        if (!(/^[a-zA-Z\s]+$/).test(value?.trim())) {
+                                                            return "Enter characters only";
+                                                        }
+                                                        return true;
                                                     }
-                                                    return true;
+                                                })
                                                 }
+
+                                            />
+                                            {errors.name && <p style={{ color: "red" }}>{errors.name.message}</p>}
+                                        </div>
+                                        <div className="form-group col-md-6 mb-3">
+                                            <label htmlFor="email" className="mb-1">Email</label>
+                                            <input type="text" name="email" className="form-control" placeholder="Optional" defaultValue={userDetails?.Email}
+                                                {
+                                                ...register("email", {
+                                                    validate: (value) => {
+                                                        if (value !== "" && !value.includes("@")) {
+                                                            return "Enter valid EmailID";
+                                                        }
+                                                        return true;
+                                                    }
+                                                })
+                                                }
+                                            />
+                                            {errors.email && <p style={{ color: "red" }}>{errors.email.message}</p>}
+                                        </div>
+                                        <div className="form-group col-md-6 mb-3">
+                                            <label htmlFor="email" className="mb-1">Mobile Number:</label>
+                                            <input type="text" name="mobile" className="form-control" maxLength={10}
+                                                {
+                                                ...register("mobile", {
+                                                    required: "Enter mobile number",
+                                                    validate: (value) => {
+                                                        if (!(/^\d{10}$/).test(value)) {
+                                                            return "Please enter valid mobile number";
+                                                        }
+                                                        return true;
+                                                    }
+                                                })
+                                                }
+                                            />
+                                            {errors.mobile && <p style={{ color: "red" }}>{errors.mobile.message}</p>}
+                                        </div>
+                                    </div>
+                                    <div className="form-group col-md-12 mb-3">
+                                        <label htmlFor="address" className="mb-1">Address</label>
+                                        <textarea type="text" name="address" rows={2} className="form-control"
+                                            {
+                                            ...register("address", {
+                                                required: "Please enter your home address"
                                             })
                                             }
                                         />
-                                        {errors.email && <p style={{ color: "red" }}>{errors.email.message}</p>}
+                                        {errors.address && <p style={{ color: "red" }}>{errors.address.message}</p>}
                                     </div>
-                                    <div className="form-group col-md-6">
-                                        <label htmlFor="email">Mobile No.:</label>
-                                        <input type="text" name="mobile" className="form-control" maxLength={10}
-                                            {
-                                            ...register("mobile", {
-                                                required: "Enter mobile number",
-                                                validate: (value) => {
-                                                    if (!(/^\d{10}$/).test(value)) {
-                                                        return "Please enter valid mobile number";
-                                                    }
-                                                    return true;
+                                    <div className="row">
+                                        <div className="form-group col-md-6">
+                                            <label htmlFor="state" className="mb-1">State</label>
+                                            <select name="state" className="form-control"
+                                                {
+                                                ...register("state")
                                                 }
-                                            })
-                                            }
-                                        />
-                                        {errors.mobile && <p style={{ color: "red" }}>{errors.mobile.message}</p>}
+                                            >
+                                                <option defaultValue>Choose...</option>
+                                                <option>...</option>
+                                            </select>
+                                        </div>
+                                        <div className="form-group col-md-6">
+                                            <label htmlFor="pincode" className="mb-1">Zip</label>
+                                            <input type="text" name="pincode" className="form-control" value={userDetails?.Pincode}
+                                                {
+                                                ...register("pincode")
+                                                }
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="form-group">
-                                    <label htmlFor="address">Address</label>
-                                    <textarea type="text" name="address" className="form-control"
-                                        {
-                                        ...register("address", {
-                                            required: true,
-                                            message: "Please enter your home address"
-                                        })
-                                        }
-                                    />
-                                    {errors.address && <p style={{ color: "red" }}>{errors.address.message}</p>}
-                                </div>
-                                <div className="form-row">
-                                    <div className="form-group col-md-4">
-                                        <label htmlFor="state">State</label>
-                                        <select name="state" className="form-control"
-                                            {
-                                            ...register("state")
-                                            }
-                                        >
-                                            <option selected>Choose...</option>
-                                            <option>...</option>
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-2">
-                                        <label htmlFor="pincode">Zip</label>
-                                        <input type="text" name="pincode" className="form-control" value={userDetails?.Pincode}
-                                            {
-                                            ...register("pincode")
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                                <br />
-                                <button type="submit" className="btn btn-primary">Proceed</button>
-                            </form>
+                                    <br />
+                                    <button type="submit" className="btn btn-primary w-100">Proceed</button>
+                                </form>
+                            </div>
                         </div>
+
+                        <div className="ryt-content col-md-6 p-3">
+                            gbffgjndfgj
+                        </div>
+
                     </div>
+
                 </div>
             </div>
         </>
