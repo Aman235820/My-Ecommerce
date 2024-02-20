@@ -38,7 +38,7 @@ export default function ProceedToBuy (props){
     }
 
     const handleCheckout = ()=>{
-        dispatch(addCheckoutItems({ userEmailID : props.userEmailID , items : props.productDetails}));
+        dispatch(addCheckoutItems({ userEmailID : props.userEmailID , items : props.productDetails , total : subTotal}));
         navigate("/checkoutPage");
     }
 

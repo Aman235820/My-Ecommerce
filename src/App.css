@@ -154,4 +154,4 @@
     font-size: inherit;
     box-shadow: none;
 }
-.checkout-form form{text-align: left;}
+.checkout-form form, .list-group{text-align: left;}
