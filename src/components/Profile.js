@@ -6,7 +6,9 @@ import { GetProducts } from '../DataService';
 import Products from './Products';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductModal from './modals/ProductModal';
-import { addProduct, updateProductQuantity , removeProduct } from '../redux/slices/cartSlice';
+import { addProduct, updateProductQuantity, removeProduct } from '../redux/slices/cartSlice';
+import { useQuery } from "@tanstack/react-query";
+import { getAllProducts } from '../redux/slices/masterSlice';
 
 function Profile() {
 
@@ -14,21 +16,22 @@ function Profile() {
 
     const { user, productCategory } = useContext(AuthContext);
     const [products, setProducts] = useState([]);
-    const [loader, setLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [productModalID, setProductModalID] = useState(null);
     const [userCart, setUserCart] = useState(null);
 
     const userEmailID = user?.userData?.Email;
 
+    const { data, isLoading , isError , error } = useQuery({
+        queryKey: ["products"],
+        queryFn: GetProducts,
+    });
+
     useEffect(() => {
-        async function fetchData() {
-            setLoading(true);
-            await GetProducts(dispatch);
-            setLoading(false);
+        if (data) {
+            dispatch(getAllProducts(data));
         }
-        fetchData();
-    }, []);
+    }, [data , dispatch]);
 
     const productData = useSelector((state) => {
         return (state.allProducts).allProducts;
@@ -80,13 +83,13 @@ function Profile() {
         setShowModal(true);
     }
 
-     const addProductTocart = (id) => {
+    const addProductTocart = (id) => {
 
         let quantity = Number(userCart.filter(item => item.product.id == id).map(item => item.quantity));
-        quantity = quantity == 0 || quantity == null ? Number(1) : quantity+1;
+        quantity = quantity == 0 || quantity == null ? Number(1) : quantity + 1;
 
         if (quantity > 1) {
-            dispatch(updateProductQuantity({quantity , id , userEmailID}));
+            dispatch(updateProductQuantity({ quantity, id, userEmailID }));
         }
         else {
             const itemToAdd = productData.filter(item => item.id == id);
@@ -99,7 +102,7 @@ function Profile() {
         }
     }
 
-    const removeProductFromCart = (id)=>{
+    const removeProductFromCart = (id) => {
         let index = myCart.findIndex(obj => obj.user == userEmailID && obj.product.id == id);
         dispatch(removeProduct(index));
     }
@@ -132,12 +135,12 @@ function Profile() {
 
                     <div className='loader m-auto'>
                         {
-                            loader && (
+                            isLoading && (
                                 <p className='m-0'><img src='loader.gif' width={60} height={60} alt='Loading...' /></p>
                             )
                         }
 
-                        {!loader && <div className="row p-5 my-3">
+                        {!isLoading && <div className="row p-5 my-3">
                             {
                                 products.map(item => {
                                     return (
@@ -147,7 +150,7 @@ function Profile() {
                                                 title={item.title}
                                                 image={item.image}
                                                 desc={item.description}
-                                                quantity={userCart.filter(obj=> obj.product.id == item.id).map(obj=> Number(obj.quantity))}
+                                                quantity={userCart.filter(obj => obj.product.id == item.id).map(obj => Number(obj.quantity))}
                                                 openProductDetailsModal={openProductDetailsModal}
                                                 addProductTocart={addProductTocart}
                                                 deleteProduct={deleteProduct}
