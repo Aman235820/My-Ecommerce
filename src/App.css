@@ -155,3 +155,7 @@
     box-shadow: none;
 }
 .checkout-form form, .list-group{text-align: left;}
+
+.close{
+  cursor: pointer;
+}

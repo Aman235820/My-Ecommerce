@@ -10,12 +10,19 @@ function Checkout() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const [proccedButton, setProceedButton] = useState(true);
+    const [promocode, setPromocode] = useState("");
+    const [totalAmount, setTotalAmont] = useState(0);
+    const [userDetails, setUserDetails] = useState({});
+    const [discountAmount, setDiscountAmount] = useState(0);
+    const [discountClaimed, setDiscountClaimed] = useState(false);
+    const [couponTags, setCouponTags] = useState([]);
+
     const cartCheckoutItems = useSelector((state) => {
         return (state.cartItems).checkoutItems;
     });
 
     const { user } = useContext(AuthContext);
-    const [userDetails, setUserDetails] = useState({});
 
     useEffect(() => {
         if (user?.Email == cartCheckoutItems?.userEmailID) {
@@ -23,6 +30,9 @@ function Checkout() {
         }
     }, [cartCheckoutItems, user, userDetails]);
 
+    useEffect(() => {
+        setTotalAmont(cartCheckoutItems[0].total);
+    }, []);
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -33,6 +43,52 @@ function Checkout() {
     const goBacktoCart = () => {
         dispatch(removeCheckoutItems());
         navigate("/myCart");
+    }
+
+    const onPaymentMethodChange = (e) => {
+        let value = e.target.value;
+        if (value == 'online') {
+            setProceedButton(true)
+        }
+        else {
+            setProceedButton(false);
+        }
+    }
+
+    const handlePromoCode = (e) => {
+        let value = (e.currentTarget.value).trim();
+        setPromocode(value);
+    }
+
+    const redeemPromoCode = () => {
+        if (promocode && promocode === 'SAVE20' && !discountClaimed) {
+            let total = totalAmount;
+            let discount = (0.20) * total;
+            setDiscountAmount((Math.round(discount * 100) / 100).toFixed(2));
+            total -= discount;
+            setTotalAmont((Math.round(total * 100) / 100).toFixed(2));
+            setDiscountClaimed(true);
+            setCouponTags([...couponTags, promocode]);
+        }
+        else {
+            if (discountClaimed) {
+                alert("Discount already claimed");
+            }
+            else {
+                alert("Invalid promocode");
+            }
+        }
+    }
+
+    const removeTag = (index) => {
+        setCouponTags(couponTags.filter((obj, i) => i !== index));
+        setDiscountClaimed(false);
+        let total = Number(totalAmount);
+        let discount = Number(discountAmount);
+        total += discount;
+        setDiscountAmount(0);
+        setTotalAmont((Math.round(total * 100) / 100).toFixed(2));
+        setPromocode(document.getElementById("promoInput").value);
     }
 
     return (
@@ -47,7 +103,7 @@ function Checkout() {
                     </nav>
                     <div className="container">
                         <div className="row justify-content-between py-3">
-                            <h2 className="p-4 text-start ">Checkout details</h2>
+                            <h2 className="px-4 text-start ">Checkout details</h2>
                             <div className="checkout-form col-md-7 p-3">
                                 <div className="container">
                                     <form onSubmit={handleSubmit(handleCheckoutDetails)}>
@@ -87,7 +143,7 @@ function Checkout() {
                                                 {errors.email && <p style={{ color: "red" }}>{errors.email.message}</p>}
                                             </div>
                                             <div className="form-group col-md-6 mb-3">
-                                                <label htmlFor="email" className="mb-1">Mobile Number:</label>
+                                                <label htmlFor="email" className="mb-1">Mobile Number</label>
                                                 <input type="text" name="mobile" className="form-control" maxLength={10}
                                                     {
                                                     ...register("mobile", {
@@ -102,6 +158,28 @@ function Checkout() {
                                                     }
                                                 />
                                                 {errors.mobile && <p style={{ color: "red" }}>{errors.mobile.message}</p>}
+                                            </div>
+                                            <div className="form-group col-md-6">
+                                                <label className="mb-1">Payment Method</label>
+                                                <div className="form-check">
+                                                    <input className="form-check-input" type="radio" name="flexRadioDefault" defaultChecked
+                                                        {...register("paymentMethod")}
+                                                        value="online"
+                                                        onChange={(e) => onPaymentMethodChange(e)}
+                                                    />
+                                                    <label className="form-check-label">
+                                                        Online Payment
+                                                    </label>
+                                                    <br />
+                                                    <input className="form-check-input" type="radio" name="flexRadioDefault"
+                                                        {...register("paymentMethod")}
+                                                        value="cod"
+                                                        onChange={(e) => onPaymentMethodChange(e)}
+                                                    />
+                                                    <label className="form-check-label">
+                                                        Cash on Delivery
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="form-group col-md-12 mb-3">
@@ -137,7 +215,7 @@ function Checkout() {
                                             </div>
                                         </div>
                                         <br />
-                                        <button type="submit" className="btn btn-primary w-100">Proceed</button>
+                                        <button type="submit" className="btn btn-primary w-100">{proccedButton ? "Proceed to Pay" : "Place Order"}</button>
                                     </form>
                                 </div>
                             </div>
@@ -151,25 +229,37 @@ function Checkout() {
                                 </h4>
                                 <ul className="list-group mb-3">
                                     {(cartCheckoutItems[0].items).map(obj => (
-                                        <li className="list-group-item d-flex justify-content-between lh-sm">
+                                        <li className="list-group-item d-flex justify-content-between lh-sm" key={obj.id}>
                                             <h6 style={{ fontSize: "14px" }} className="my-0">{(obj.name).length > 30 ? (obj.name).slice(0, 30) : obj.name} <small className="text-muted d-block">Quantity: {obj.quantity}</small></h6>
 
                                             <b style={{ fontSize: "14px" }} className="text-muted text-end">₹{obj.amount}  <span className="d-block fw-normal">₹{obj.price} <small>per item</small></span></b>
                                         </li>
                                     ))
                                     }
+                                    <li className="list-group-item d-flex justify-content-between bg-light">
+                                        <div className="text-success">
+                                            <h6 className="my-0">Promo code</h6>
+                                            <small>
+                                                {couponTags.map((tag, index) => (
+                                                    <div className="tag-item" key={index}>
+                                                        <span className="text">{tag}</span>
+                                                        <span className="close" onClick={() => removeTag(index)}>&times;</span>
+                                                    </div>
+                                                ))}
+
+                                            </small>
+                                        </div>
+                                        <span className="text-success">−₹{discountAmount}</span>
+                                    </li>
                                     <li className="list-group-item d-flex justify-content-between">
                                         <span>Total (INR)</span>
-                                        <strong>₹{cartCheckoutItems[0].total}</strong>
+                                        <strong>₹{totalAmount}</strong>
                                     </li>
                                 </ul>
-
-                                <form className="border rounded p-2">
-                                    <div className="input-group">
-                                        <input type="text" className="form-control" placeholder="Promo code" />
-                                        <button type="submit" className="btn btn-secondary">Redeem</button>
-                                    </div>
-                                </form>
+                                <div className="input-group">
+                                    <input type="text" className="form-control" id="promoInput" placeholder="Promo code" onKeyDown={(e) => { if (e.key == 'Enter') { redeemPromoCode() } }} onChange={(e) => handlePromoCode(e)} disabled={discountClaimed} />
+                                    <button type="submit" className="btn btn-secondary" onClick={() => redeemPromoCode()} disabled={discountClaimed} >Redeem</button>
+                                </div>
                             </div>
 
                         </div>

@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const masterSlice = createSlice({
-     name : "masterData",
-     initialState : {
-          allProducts : []
+     name: "masterData",
+     initialState: {
+          allProducts: []
      },
-     reducers : {
-          getAllProducts(state , action){
-                 state.allProducts = action.payload;
+     reducers: {
+          getAllProducts(state, action) {
+               state.allProducts = action.payload;
           }
      }
 });
 
 export default masterSlice.reducer;
-export const {getAllProducts} = masterSlice.actions;
+export const { getAllProducts } = masterSlice.actions;
