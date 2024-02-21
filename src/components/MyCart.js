@@ -27,7 +27,7 @@ export default function MyCart() {
 
     useEffect(() => {
         fetchAllProducts();
-    }, [selectedProducts]);
+    }, [selectedProducts , userEmailID]);
 
     const columns = [
         {

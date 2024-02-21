@@ -22,16 +22,10 @@ function Profile() {
 
     const userEmailID = user?.userData?.Email;
 
-    const { data, isLoading , isError , error } = useQuery({
+    const { data, isLoading , isError , error} = useQuery({
         queryKey: ["products"],
-        queryFn: GetProducts,
+        queryFn: GetProducts,            //fetching the API data through an asynchronous call
     });
-
-    useEffect(() => {
-        if (data) {
-            dispatch(getAllProducts(data));
-        }
-    }, [data , dispatch]);
 
     const productData = useSelector((state) => {
         return (state.allProducts).allProducts;
@@ -40,6 +34,12 @@ function Profile() {
     let myCart = useSelector((state) => {
         return (state.cartItems).cartArray;
     });
+
+    useEffect(() => {
+        if (data) {
+            dispatch(getAllProducts(data));
+        }
+    }, [data , dispatch]);
 
     useEffect(() => {
         let cart = myCart.filter(item => item.user == userEmailID).map((item) => ({ product: item.product, quantity: Number(item.quantity) }));

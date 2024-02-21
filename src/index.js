@@ -6,22 +6,17 @@ import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context/AuthProvider';
 import store from './redux/store';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/es/integration/react';
-import { persistStore } from 'redux-persist';
 import {QueryClientProvider , QueryClient} from "@tanstack/react-query";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-let persistor = persistStore(store);
 const queryClient = new QueryClient();
 
 root.render(
   <QueryClientProvider client={queryClient}>
   <Provider store={store}>
     <AuthProvider>
-      <PersistGate persistor={persistor}>
         <App />
-      </PersistGate>
     </AuthProvider>
   </Provider>
   </QueryClientProvider>

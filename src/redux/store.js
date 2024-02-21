@@ -1,24 +1,43 @@
-import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import cartSlice from "./slices/cartSlice";
 import masterSlice from "./slices/masterSlice";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 
-const persistConfig = {
-     key:"ecommerce-root",
-     version : 1,
-     storage
+const reduxSessionKey = 'HVEFJGEFHUJ';
+
+const loadState = () => {
+     try {
+          const serializedState = localStorage.getItem(reduxSessionKey);
+          if (serializedState == null) {
+               return undefined;
+          }
+          return JSON.parse(decodeURIComponent(serializedState))
+     } catch (e) {
+          console.log(e);
+          return undefined;
+     }
 }
 
-const allReducers = combineReducers({
-    cartItems :  cartSlice,
-    allProducts : masterSlice,
-});
+const saveState = (state) => {
+     try {
+          let serializedState = encodeURIComponent(JSON.stringify(state));
+          localStorage.setItem(reduxSessionKey, serializedState);
+     } catch (e) {
+          console.log(e);
+     }
+}
 
-const persistedReducer = persistReducer(persistConfig , allReducers);
+const preloadedState = loadState();
 
 const store = configureStore({
-     reducer: persistedReducer,
+     reducer: {
+          cartItems: cartSlice,
+          allProducts: masterSlice,
+     },
+     preloadedState: preloadedState
+});
+
+store.subscribe(() => {
+     saveState(store.getState());
 });
 
 export default store;

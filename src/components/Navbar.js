@@ -41,14 +41,10 @@ export default function Navbar() {
                     <li className="nav-item">
                         <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(5)}}>Others</Link>
                     </li>
-
-                    {/* <li className="nav-item">
-                        <a className="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li> */}
                 </ul>
                 <div className="ms-auto margin-auto">
                     <li className="nav-item">
-                        <Link to="/myCart"><img src="cart.png" height="30px" width="30px" /></Link>
+                        <Link to="/myCart"><img src="cart.png" height="30px" width="30px" alt="cart"/></Link>
                     </li>
                 </div>
                 <div>
