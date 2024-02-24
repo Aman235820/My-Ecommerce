@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthProvider";
 import { GetData } from "../DataService";
+import secureLocalStorage from "react-secure-storage";
 
 const AuthGuard = ({ children }) => {
 
@@ -13,7 +14,7 @@ const AuthGuard = ({ children }) => {
 
     const checkUser = async () => {
 
-        const loginCookie = JSON.parse(localStorage.getItem("userLogin"));
+        const loginCookie = JSON.parse(secureLocalStorage.getItem("userLogin"));
         if (loginCookie) {
             setStatus(true);
             const response = await GetData();

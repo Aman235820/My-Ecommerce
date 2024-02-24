@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import AuthContext from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { GetData } from "../DataService";
+import secureLocalStorage  from "react-secure-storage";
 
 function Login() {
 
@@ -30,7 +31,7 @@ function Login() {
         if (validCredentials) {
             setFormValidation({ ...formValidation, login: true });
             setStatus(true);
-            localStorage.setItem("userLogin", JSON.stringify(loginDetails));
+            secureLocalStorage.setItem("userLogin", JSON.stringify(loginDetails));
             navigate("/profile");
         }
         else {

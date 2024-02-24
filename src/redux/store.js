@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartSlice from "./slices/cartSlice";
 import masterSlice from "./slices/masterSlice";
+import secureLocalStorage from "react-secure-storage";
 
 const reduxSessionKey = 'HVEFJGEFHUJ';
 
 const loadState = () => {
      try {
-          const serializedState = localStorage.getItem(reduxSessionKey);
+          const serializedState = secureLocalStorage.getItem(reduxSessionKey);
           if (serializedState == null) {
                return undefined;
           }
@@ -20,7 +21,7 @@ const loadState = () => {
 const saveState = (state) => {
      try {
           let serializedState = encodeURIComponent(JSON.stringify(state));
-          localStorage.setItem(reduxSessionKey, serializedState);
+          secureLocalStorage.setItem(reduxSessionKey, serializedState);
      } catch (e) {
           console.log(e);
      }
