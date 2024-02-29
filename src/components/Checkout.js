@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useContext, useState } from "react";
 import AuthContext from "../context/AuthProvider";
+import OrderPlacedModal from "./modals/OrderPlacedModal";
 import { removeCheckoutItems } from "../redux/slices/cartSlice";
 
 function Checkout() {
@@ -17,6 +18,7 @@ function Checkout() {
     const [discountAmount, setDiscountAmount] = useState(0);
     const [discountClaimed, setDiscountClaimed] = useState(false);
     const [couponTags, setCouponTags] = useState([]);
+    const [showPlacedModal, setShowPlacedModal] = useState(false);
 
     const cartCheckoutItems = useSelector((state) => {
         return (state.cartItems).checkoutItems;
@@ -28,17 +30,15 @@ function Checkout() {
         if (user?.Email == cartCheckoutItems?.userEmailID) {
             setUserDetails(user?.userData);
         }
+        setValue("name" , userDetails?.Name);
     }, [cartCheckoutItems, user, userDetails]);
 
     useEffect(() => {
         setTotalAmont(cartCheckoutItems[0].total);
     }, []);
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } , setValue } = useForm();
 
-    const handleCheckoutDetails = (data) => {
-        console.log(data);
-    }
 
     const goBacktoCart = () => {
         dispatch(removeCheckoutItems());
@@ -89,10 +89,29 @@ function Checkout() {
         setDiscountAmount(0);
         setTotalAmont((Math.round(total * 100) / 100).toFixed(2));
         setPromocode(document.getElementById("promoInput").value);
+    }   
+
+    const placeOrder = (data) => {
+        console.log(data);
+
+        if (proccedButton) {
+
+        }
+        else {
+            setShowPlacedModal(true);
+        }
+    }
+
+    const closeModal = () => {
+        setShowPlacedModal(false);
     }
 
     return (
         <>
+
+            {showPlacedModal && <OrderPlacedModal closeModal={closeModal}></OrderPlacedModal>}
+
+
             <div className="dashboard-wrapper">
                 <div className='content-wrapper d-flex'>
                     <nav className="navbar sticky navbar-expand-lg navbar-dark bg-dark">
@@ -106,7 +125,7 @@ function Checkout() {
                             <h2 className="px-4 text-start ">Checkout details</h2>
                             <div className="checkout-form col-md-7 p-3">
                                 <div className="container">
-                                    <form onSubmit={handleSubmit(handleCheckoutDetails)}>
+                                    <form onSubmit={handleSubmit(placeOrder)}>
                                         <div className="row">
                                             <div className="form-group col-md-6 mb-3">
                                                 <label htmlFor="name" className="mb-1">Name</label>

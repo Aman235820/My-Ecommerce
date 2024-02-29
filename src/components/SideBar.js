@@ -2,7 +2,7 @@ export default function SideBar(props) {
     return (
         <>
             <div className="sidebar-container">
-                <img src="user.png" height="100px" width="100px" />
+                <img src="user.png" height="100px" width="100px" alt="user"/>
                 <br />
                 <p>{props.Name}</p>
                 <br />
