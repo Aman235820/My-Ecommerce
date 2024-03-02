@@ -6,10 +6,9 @@ const AuthContext = createContext();
     
      const [status , setStatus] = useState(false);
      const[user , setUser] = useState({});
-     const [productCategory , setProductCategory] = useState(1);
 
      return(
-        <AuthContext.Provider value={{status , setStatus , user , setUser , productCategory , setProductCategory}}>
+        <AuthContext.Provider value={{status , setStatus , user , setUser}}>
             {children}
         </AuthContext.Provider>
      );

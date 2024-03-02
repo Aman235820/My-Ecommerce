@@ -11,6 +11,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import AdminPanel from './components/AdminPanel';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/profile" element={<AuthGuard><Profile /></AuthGuard>} />
           <Route path="myCart" element = {<AuthGuard><MyCart/></AuthGuard>} />
           <Route path="/checkoutPage" element={<AuthGuard><Checkout/></AuthGuard>}></Route>
+          <Route path="/admin" element={<AuthGuard><AdminPanel/></AuthGuard>}></Route>
         </Routes>
       </BrowserRouter>
 

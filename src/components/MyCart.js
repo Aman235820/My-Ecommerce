@@ -133,18 +133,11 @@ export default function MyCart() {
             {showModal && proceedToBuy}
 
             <div className="dashboard-wrapper">
-                <SideBar style={{ position: "sticky", top: 0 }}
-                    Name={user?.userData?.Name}
-                    Age={user?.userData?.Age}
-                    Gender={user?.userData?.Gender}
-                    Pincode={user?.userData?.Pincode}
-                ></SideBar>
-
                 <div className='content-wrapper d-flex'>
                     <Navbar></Navbar>
-                    <br /><br /><br />
 
                     <div className="ms-auto" style={{marginRight: '20px'}}>
+                        <br/>
                         <input type="text" className="search-bar" placeholder="Search..." onChange={searchItem}></input>
                     </div>
                     <DataTable

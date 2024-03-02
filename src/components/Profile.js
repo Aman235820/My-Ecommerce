@@ -9,12 +9,14 @@ import ProductModal from './modals/ProductModal';
 import { addProduct, updateProductQuantity, removeProduct } from '../redux/slices/cartSlice';
 import { useQuery } from "@tanstack/react-query";
 import { getAllProducts } from '../redux/slices/masterSlice';
+import { Link } from 'react-router-dom';
 
 function Profile() {
 
     const dispatch = useDispatch();
 
-    const { user, productCategory } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
+    const [productCategory, setProductCategory] = useState(1);
     const [products, setProducts] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [productModalID, setProductModalID] = useState(null);
@@ -22,13 +24,13 @@ function Profile() {
 
     const userEmailID = user?.userData?.Email;
 
-    const { data, isLoading , isError , error} = useQuery({
+    const { data, isLoading, isError, error } = useQuery({
         queryKey: ["products"],
         queryFn: GetProducts,            //fetching the API data through an asynchronous call
     });
 
     const productData = useSelector((state) => {
-        return (state.allProducts).allProducts;
+        return (state.masterData).allProducts;
     });
 
     let myCart = useSelector((state) => {
@@ -39,7 +41,7 @@ function Profile() {
         if (data) {
             dispatch(getAllProducts(data));
         }
-    }, [data , dispatch]);
+    }, [data, dispatch]);
 
     useEffect(() => {
         let cart = myCart.filter(item => item.user == userEmailID).map((item) => ({ product: item.product, quantity: Number(item.quantity) }));
@@ -122,16 +124,35 @@ function Profile() {
         <>
             {showModal && mainProductModal}
 
-            <div className="dashboard-wrapper">
-                <SideBar style={{ position: "sticky", top: 0 }}
-                    Name={user?.userData?.Name}
-                    Age={user?.userData?.Age}
-                    Gender={user?.userData?.Gender}
-                    Pincode={user?.userData?.Pincode}
-                ></SideBar>
+
 
                 <div className='content-wrapper d-flex'>
                     <Navbar></Navbar>
+
+                    <div>
+                        <header class="d-flex justify-content-center py-3">
+                            <ul class="nav nav-pills">
+                                <li className="nav-item active">
+                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(1) }}>All Articles</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(2) }}>Men's</Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(3) }}>Women's</Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(4) }}>Electronics</Link>
+                                </li>
+
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(5) }}>Others</Link>
+                                </li>
+                            </ul>
+                        </header>
+                    </div>
 
                     <div className='loader m-auto'>
                         {
@@ -144,8 +165,8 @@ function Profile() {
                             {
                                 products.map(item => {
                                     return (
-                                        <div className="col-3 p-3">
-                                            <Products key={item.id}
+                                        <div className="col-3 p-3" key={item.key}>
+                                            <Products key={item.key}
                                                 id={item.id}
                                                 title={item.title}
                                                 image={item.image}
@@ -162,7 +183,14 @@ function Profile() {
                     </div>
                 </div>
 
-            </div>
+           { !isLoading &&(<footer>
+                <SideBar style={{ position: "sticky", bottom: 0 }}
+                    Name={user?.userData?.Name}
+                    Age={user?.userData?.Age}
+                    Gender={user?.userData?.Gender}
+                    Pincode={user?.userData?.Pincode}
+                ></SideBar>
+            </footer>)}
         </>
     );
 }

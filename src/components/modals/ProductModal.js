@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom";
 import { useEffect, useState , useRef} from "react";
 import { useSelector } from "react-redux";
-import { getByDisplayValue } from "@testing-library/react";
 
 export default function ProductModal(props) {
 
@@ -9,7 +8,7 @@ export default function ProductModal(props) {
     const [myProduct, setMyProduct] = useState({});
 
     const productData = useSelector((state) => {
-        return (state.allProducts).allProducts;
+        return (state.masterData).allProducts;
     });
 
     const closeModalRef = useRef(null);

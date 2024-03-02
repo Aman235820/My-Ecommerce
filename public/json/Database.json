@@ -5,7 +5,8 @@
         "Password" : "123",
         "Age" : 23,
         "Gender" : "Male",
-        "Pincode" : 122001 
+        "Pincode" : 122001,
+        "AdminAccess" : true
     },
     {
         "Name" : "John Doe",
@@ -13,6 +14,7 @@
         "Password" : "doe@123",
         "Age" : 53,
         "Gender" : "Male",
-        "Pincode" : 311001 
+        "Pincode" : 311001,
+        "AdminAccess" : false
     }
 ]

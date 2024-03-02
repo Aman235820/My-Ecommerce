@@ -6,7 +6,7 @@ import secureLocalStorage from "react-secure-storage";
 
 export default function Navbar() {
 
-    const { setUser, setStatus , setProductCategory } = useContext(AuthContext);
+    const { user, setUser, setStatus } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -17,42 +17,43 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="navbar sticky navbar-expand-lg navbar-dark bg-dark" id="navs">
-            <span className="navbar-brand">Shoppers' Station</span>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto">
-                    <li className="nav-item active">
-                        <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(1)}}>Home</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/profile"  onClick={()=>{setProductCategory(2)}}>Men's</Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(3)}}>Women's</Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(4)}}>Electronics</Link>
-                    </li>
-
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/profile" onClick={()=>{setProductCategory(5)}}>Others</Link>
-                    </li>
-                </ul>
-                <div className="ms-auto margin-auto">
-                    <li className="nav-item">
-                        <Link to="/myCart"><img src="cart.png" height="30px" width="30px" alt="cart"/></Link>
-                    </li>
-                </div>
-                <div>
-                    <li className="nav-item">
-                        <button className="btn btn-outline-success" onClick={handleLogout}>Logout</button>
-                    </li>
+        <nav className="navbar sticky navbar-expand-lg navbar-dark bg-dark">
+            <div className="container-fluid">
+                <span className="navbar-brand">Shoppers' Station</span>
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div className="ms-auto margin-auto">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li className="nav-item">
+                                <a className="nav-link" aria-current="page" href="/profile">Home</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={`nav-link ${user?.userData?.AdminAccess ? "" : "disabled"}`} href="/admin" tabIndex="-1" aria-disabled="true">Admin</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" aria-current="page" href="/profile">My Orders</a>
+                            </li>
+                            <li className="nav-item dropdown">
+                                <span className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="userIcon.png" width="20px" height="20px" alt="user" />{user?.userData?.Name}
+                                </span>
+                                <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><span className="dropdown-item">Profile</span></li>
+                                    <li><span className="dropdown-item">24x7 Customer Care</span></li>
+                                    <li><hr className="dropdown-divider" /></li>
+                                    <li><span className="dropdown-item" onClick={handleLogout}>Logout</span></li>
+                                </ul>
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/myCart"><img src="cart.png" height="30px" width="30px" alt="cart" /></Link>
+                            </li>
+                            <li className="nav-item">
+                                <button className="btn btn-outline-success" onClick={handleLogout}>Logout</button>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>

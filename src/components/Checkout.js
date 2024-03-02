@@ -5,13 +5,15 @@ import { useEffect, useContext, useState } from "react";
 import AuthContext from "../context/AuthProvider";
 import OrderPlacedModal from "./modals/OrderPlacedModal";
 import { removeCheckoutItems } from "../redux/slices/cartSlice";
+import IndianStates from "./../states.json";
+import { setPlacedOrders } from "../redux/actions";
 
 function Checkout() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [proccedButton, setProceedButton] = useState(true);
+    const [proccedOnlineButton, setProceedOnlineButton] = useState(true);
     const [promocode, setPromocode] = useState("");
     const [totalAmount, setTotalAmont] = useState(0);
     const [userDetails, setUserDetails] = useState({});
@@ -48,15 +50,15 @@ function Checkout() {
     const onPaymentMethodChange = (e) => {
         let value = e.target.value;
         if (value == 'online') {
-            setProceedButton(true)
+            setProceedOnlineButton(true)
         }
         else {
-            setProceedButton(false);
+            setProceedOnlineButton(false);
         }
     }
 
     const handlePromoCode = (e) => {
-        let value = (e.currentTarget.value).trim();
+        let value = (e.currentTarget.value).toUpperCase().trim();
         setPromocode(value);
     }
 
@@ -92,13 +94,18 @@ function Checkout() {
     }   
 
     const placeOrder = (data) => {
-        console.log(data);
-
-        if (proccedButton) {
+        if (proccedOnlineButton) {
 
         }
         else {
             setShowPlacedModal(true);
+            let placedItemsObj = {
+                customerInfo : data,
+                articles : cartCheckoutItems[0].items,
+                amountPaid : totalAmount,
+                discountClaimed : discountClaimed
+            }
+            dispatch(setPlacedOrders(placedItemsObj));
         }
     }
 
@@ -220,8 +227,12 @@ function Checkout() {
                                                     ...register("state")
                                                     }
                                                 >
-                                                    <option defaultValue>Choose...</option>
-                                                    <option>...</option>
+                                                    <option defaultValue>--State--</option>
+                                                    {
+                                                        IndianStates.map((obj)=>(
+                                                             <option key={obj.code} value={obj.name}>{obj.name}</option>
+                                                        ))
+                                                    }
                                                 </select>
                                             </div>
                                             <div className="form-group col-md-6">
@@ -234,7 +245,7 @@ function Checkout() {
                                             </div>
                                         </div>
                                         <br />
-                                        <button type="submit" className="btn btn-primary w-100">{proccedButton ? "Proceed to Pay" : "Place Order"}</button>
+                                        <button type="submit" className="btn btn-primary w-100">{proccedOnlineButton ? "Proceed to Pay" : "Place Order"}</button>
                                     </form>
                                 </div>
                             </div>

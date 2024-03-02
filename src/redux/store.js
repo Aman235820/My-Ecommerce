@@ -32,7 +32,7 @@ const preloadedState = loadState();
 const store = configureStore({
      reducer: {
           cartItems: cartSlice,
-          allProducts: masterSlice,
+          masterData: masterSlice,
      },
      preloadedState: preloadedState
 });

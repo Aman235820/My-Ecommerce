@@ -1,4 +1,4 @@
-
+import PropTypes from 'prop-types';
 export default function Products(props) {
 
   const openProductModal = (id) => {
@@ -39,4 +39,9 @@ export default function Products(props) {
 
     </>
   );
+}
+
+Products.propTypes = {
+     title : PropTypes.string,
+     desc : PropTypes.string
 }
