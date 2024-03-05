@@ -165,7 +165,7 @@ function Profile() {
                             {
                                 products.map(item => {
                                     return (
-                                        <div className="col-3 p-3" key={item.key}>
+                                        <div className="col-md-3 p-3" key={item.key}>
                                             <Products key={item.key}
                                                 id={item.id}
                                                 title={item.title}
