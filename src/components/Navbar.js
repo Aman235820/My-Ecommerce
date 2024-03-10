@@ -33,7 +33,7 @@ export default function Navbar() {
                                 <a className={`nav-link ${user?.userData?.AdminAccess ? "" : "disabled"}`} href="/admin" tabIndex="-1" aria-disabled="true">Admin</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" aria-current="page" href="/profile">My Orders</a>
+                                <a className="nav-link" aria-current="page" href="/myOrders">My Orders</a>
                             </li>
                             <li className="nav-item dropdown">
                                 <span className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

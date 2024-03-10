@@ -103,7 +103,9 @@ function Checkout() {
                 customerInfo : data,
                 articles : cartCheckoutItems[0].items,
                 amountPaid : totalAmount,
-                discountClaimed : discountClaimed
+                discountClaimed : discountClaimed,
+                discountAmount : discountAmount,
+                timeofPurchase : new Date()
             }
             dispatch(setPlacedOrders(placedItemsObj));
         }

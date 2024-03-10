@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import AuthGuard from './guards/AuthGuard';
 import MyCart from './components/MyCart';
 import Checkout from "./components/Checkout";
+import MyOrders from './components/MyOrders';
 
 import {
   BrowserRouter,
@@ -29,6 +30,7 @@ function App() {
           <Route path="myCart" element = {<AuthGuard><MyCart/></AuthGuard>} />
           <Route path="/checkoutPage" element={<AuthGuard><Checkout/></AuthGuard>}></Route>
           <Route path="/admin" element={<AuthGuard><AdminPanel/></AuthGuard>}></Route>
+          <Route path="/myOrders" element={<AuthGuard><MyOrders/></AuthGuard>}></Route>
         </Routes>
       </BrowserRouter>
 
