@@ -32,14 +32,14 @@ function Checkout() {
         if (user?.Email == cartCheckoutItems?.userEmailID) {
             setUserDetails(user?.userData);
         }
-        setValue("name" , userDetails?.Name);
+        setValue("name", userDetails?.Name);
     }, [cartCheckoutItems, user, userDetails]);
 
     useEffect(() => {
         setTotalAmont(cartCheckoutItems[0].total);
     }, []);
 
-    const { register, handleSubmit, formState: { errors } , setValue } = useForm();
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm();
 
 
     const goBacktoCart = () => {
@@ -91,7 +91,7 @@ function Checkout() {
         setDiscountAmount(0);
         setTotalAmont((Math.round(total * 100) / 100).toFixed(2));
         setPromocode(document.getElementById("promoInput").value);
-    }   
+    }
 
     const placeOrder = (data) => {
         if (proccedOnlineButton) {
@@ -100,12 +100,12 @@ function Checkout() {
         else {
             setShowPlacedModal(true);
             let placedItemsObj = {
-                customerInfo : data,
-                articles : cartCheckoutItems[0].items,
-                amountPaid : totalAmount,
-                discountClaimed : discountClaimed,
-                discountAmount : discountAmount,
-                timeofPurchase : new Date()
+                customerInfo: data,
+                articles: cartCheckoutItems[0].items,
+                amountPaid: totalAmount,
+                discountClaimed: discountClaimed,
+                discountAmount: discountAmount,
+                timeofPurchase: new Date().toISOString()
             }
             dispatch(setPlacedOrders(placedItemsObj));
         }
@@ -118,7 +118,7 @@ function Checkout() {
     return (
         <>
 
-            {showPlacedModal && <OrderPlacedModal closeModal={closeModal}></OrderPlacedModal>}
+            {showPlacedModal && <OrderPlacedModal closeModal={closeModal} userEmailID = {cartCheckoutItems?.userEmailID}></OrderPlacedModal>}
 
 
             <div className="dashboard-wrapper">
@@ -231,8 +231,8 @@ function Checkout() {
                                                 >
                                                     <option defaultValue>--State--</option>
                                                     {
-                                                        IndianStates.map((obj)=>(
-                                                             <option key={obj.code} value={obj.name}>{obj.name}</option>
+                                                        IndianStates.map((obj) => (
+                                                            <option key={obj.code} value={obj.name}>{obj.name}</option>
                                                         ))
                                                     }
                                                 </select>

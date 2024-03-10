@@ -22,6 +22,7 @@ export default function ProceedToBuy (props){
             document.body.style.overflowY = 'scroll';
         };
 
+
     },[]);
 
     const calculateSubTotal = ()=>{

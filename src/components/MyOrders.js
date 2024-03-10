@@ -15,7 +15,9 @@ export default function MyOrders(){
       },[myOrders]);
 
       const setMyOrdersData = ()=>{
-            setOrdersList(myOrders[0].articles);
+             if(myOrders){
+                   setOrdersList(myOrders[0]?.articles);
+             }
       }
 
       const columns = [

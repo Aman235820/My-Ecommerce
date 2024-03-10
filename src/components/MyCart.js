@@ -91,6 +91,7 @@ export default function MyCart() {
                 name: item.product.title,
                 price: item.product.price,
                 quantity: item.quantity,
+                category: item.product.category,
                 amount: (Math.round((item.quantity * item.product.price) * 100) / 100).toFixed(2)
             }
             return obj;
