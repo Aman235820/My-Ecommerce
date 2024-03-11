@@ -16,7 +16,10 @@ export default function MyOrders(){
 
       const setMyOrdersData = ()=>{
              if(myOrders){
-                   setOrdersList(myOrders[0]?.articles);
+                   const orderedItems = myOrders.map(obj => {
+                            return obj.articles;
+                   })
+                 setOrdersList(orderedItems.flat(1));
              }
       }
 

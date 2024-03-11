@@ -3,10 +3,9 @@ import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useContext, useState } from "react";
 import AuthContext from "../context/AuthProvider";
-import OrderPlacedModal from "./modals/OrderPlacedModal";
 import { removeCheckoutItems } from "../redux/slices/cartSlice";
 import IndianStates from "./../states.json";
-import { setPlacedOrders } from "../redux/actions";
+import { setPlacedOrders , emptyUserCart } from "../redux/actions";
 
 function Checkout() {
 
@@ -20,7 +19,6 @@ function Checkout() {
     const [discountAmount, setDiscountAmount] = useState(0);
     const [discountClaimed, setDiscountClaimed] = useState(false);
     const [couponTags, setCouponTags] = useState([]);
-    const [showPlacedModal, setShowPlacedModal] = useState(false);
 
     const cartCheckoutItems = useSelector((state) => {
         return (state.cartItems).checkoutItems;
@@ -98,7 +96,6 @@ function Checkout() {
 
         }
         else {
-            setShowPlacedModal(true);
             let placedItemsObj = {
                 customerInfo: data,
                 articles: cartCheckoutItems[0].items,
@@ -108,19 +105,15 @@ function Checkout() {
                 timeofPurchase: new Date().toISOString()
             }
             dispatch(setPlacedOrders(placedItemsObj));
+            dispatch(removeCheckoutItems());
+            dispatch(emptyUserCart(user?.userData?.Email));
+            alert("Congratulations Order placed Successfully !! Press OK to explore more items.");
+            navigate("/profile")
         }
-    }
-
-    const closeModal = () => {
-        setShowPlacedModal(false);
     }
 
     return (
         <>
-
-            {showPlacedModal && <OrderPlacedModal closeModal={closeModal} userEmailID = {cartCheckoutItems?.userEmailID}></OrderPlacedModal>}
-
-
             <div className="dashboard-wrapper">
                 <div className='content-wrapper d-flex'>
                     <nav className="navbar sticky navbar-expand-lg navbar-dark bg-dark">

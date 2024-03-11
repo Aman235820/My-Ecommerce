@@ -53,27 +53,27 @@ function AdminPanel() {
         const flattendbarChartData = barChartData.flat();                                  //it converts the 2-D array into single dimentional array eg : [[1,2],[3,4],[4,5]] -> [1,2,3,4,5]
 
         flattendbarChartData.forEach(obj => {
-            if (obj.category == "men's clothing") {
-                dispObj.find(i => i.category == "Men's").amount += Number(obj.amount);
+            if (obj.category === "men's clothing") {
+                dispObj.find(i => i.category === "Men's").amount += Number(obj.amount);
             }
-            else if (obj.category == "women's clothing") {
-                dispObj.find(i => i.category == "Women's").amount += Number(obj.amount);
+            else if (obj.category === "women's clothing") {
+                dispObj.find(i => i.category === "Women's").amount += Number(obj.amount);
             }
-            else if (obj.category == "electronics") {
-                dispObj.find(i => i.category == "Electronics").amount += Number(obj.amount);
+            else if (obj.category === "electronics") {
+                dispObj.find(i => i.category === "Electronics").amount += Number(obj.amount);
             }
-            else{
-                dispObj.find(i => i.category == "Others").amount += Number(obj.amount);
+            else {
+                dispObj.find(i => i.category === "Others").amount += Number(obj.amount);
             }
         });
 
-              setBarChartData({
-                labels : dispObj.map(obj=> obj.category),
-                datasets: [{
-                       label: "Sales Amount",
-                       data: dispObj.map(obj=> obj.amount)
-                }]
-          })
+        setBarChartData({
+            labels: dispObj.map(obj => obj.category),
+            datasets: [{
+                label: "Sales Amount",
+                data: dispObj.map(obj => obj.amount)
+            }]
+        })
     }
 
     return (
@@ -82,9 +82,12 @@ function AdminPanel() {
             {
                 hasAdminAccess && (<div>
 
-                    <div className='container'>
+                    <div className='container d-flex justify-content-end'>
+                        <div className="w-50 h-100">
 
-                        <Bar data={barChartData} />
+                            <Bar data={barChartData} />
+                        </div>
+
 
                     </div>
 
