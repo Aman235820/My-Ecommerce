@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useContext, useState, useEffect } from 'react';
 import AuthContext from '../context/AuthProvider';
 import Navbar from './Navbar';
-import { Bar } from 'react-chartjs-2';
+import { Bar , Line } from 'react-chartjs-2';
 import { Chart as CharJS } from 'chart.js/auto';
 
 function AdminPanel() {
@@ -27,8 +27,7 @@ function AdminPanel() {
 
 
     const prepareBarchartData = () => {
-        const barChartData = placedOrders.map(item => (item.articles).map(obj => ({ category: obj.category, amount: Number(obj.price) })))
-        console.log(barChartData)
+        const barChartData = placedOrders.map(item => (item.articles).map(obj => ({ category: obj.category, amount: Number(obj.price) , quantity : Number(obj.quantity) })))
 
         const dispObj = [
             {
@@ -54,16 +53,16 @@ function AdminPanel() {
 
         flattendbarChartData.forEach(obj => {
             if (obj.category === "men's clothing") {
-                dispObj.find(i => i.category === "Men's").amount += Number(obj.amount);
+                dispObj.find(i => i.category === "Men's").amount += Number(obj.amount * obj.quantity);
             }
             else if (obj.category === "women's clothing") {
-                dispObj.find(i => i.category === "Women's").amount += Number(obj.amount);
+                dispObj.find(i => i.category === "Women's").amount += Number(obj.amount * obj.quantity);
             }
             else if (obj.category === "electronics") {
-                dispObj.find(i => i.category === "Electronics").amount += Number(obj.amount);
+                dispObj.find(i => i.category === "Electronics").amount += Number(obj.amount * obj.quantity);
             }
             else {
-                dispObj.find(i => i.category === "Others").amount += Number(obj.amount);
+                dispObj.find(i => i.category === "Others").amount += Number(obj.amount * obj.quantity);
             }
         });
 
@@ -71,7 +70,8 @@ function AdminPanel() {
             labels: dispObj.map(obj => obj.category),
             datasets: [{
                 label: "Sales Amount",
-                data: dispObj.map(obj => obj.amount)
+                data: dispObj.map(obj => obj.amount),
+                backgroundColor: ["aqua" , "pink" , "lightgrey" , "lightgreen"]
             }]
         })
     }
@@ -82,15 +82,19 @@ function AdminPanel() {
             {
                 hasAdminAccess && (<div>
 
-                    <div className='container d-flex justify-content-end'>
+                    <div className='container d-flex'>
+                        <h4 className='justify-content-start'>Bar Chart representing performace of different categories of all the listed articles</h4>
                         <div className="w-50 h-100">
-
                             <Bar data={barChartData} />
                         </div>
-
-
                     </div>
 
+                    <div className='container d-flex'>
+                        <h4 className='justify-content-start'>Line Chart representing performace of different categories of all the listed articles</h4>
+                        <div className="w-50 h-100">
+                            <Line data={barChartData} />
+                        </div>
+                    </div>
 
                 </div>)
             }
