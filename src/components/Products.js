@@ -22,7 +22,7 @@ export default function Products(props) {
     <>
 
       <div className="card">
-        <img className="card-img-top p-2" src={props.image} height="200px" width="200px" alt="img" />
+        <img className="card-img-top px-4 pt-3" src={props.image} height="200px" width="150px" alt="img" />
         <div className="card-body">
           <h6 className="card-title">{props.title}</h6>
           <p className="card-text">{props.desc.length > 150 ? truncatedDescription : props.desc}</p>

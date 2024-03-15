@@ -130,8 +130,8 @@ function Profile() {
                     <Navbar></Navbar>
 
                     <div>
-                        <header class="d-flex justify-content-center py-3">
-                            <ul class="nav nav-pills">
+                        <header className="d-flex justify-content-center py-3">
+                            <ul className="nav nav-pills">
                                 <li className="nav-item active">
                                     <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(1) }}>All Articles</Link>
                                 </li>
@@ -165,8 +165,8 @@ function Profile() {
                             {
                                 products.map(item => {
                                     return (
-                                        <div className="col-md-3 p-3" key={item.key}>
-                                            <Products key={item.key}
+                                        <div className="col-md-3 p-3" key={item.id}>
+                                            <Products key={item.id}
                                                 id={item.id}
                                                 title={item.title}
                                                 image={item.image}
