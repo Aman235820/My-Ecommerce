@@ -46,7 +46,7 @@ function Profile() {
     useEffect(() => {
         let cart = myCart.filter(item => item.user == userEmailID).map((item) => ({ product: item.product, quantity: Number(item.quantity) }));
         setUserCart(cart);
-    }, [myCart]);
+    }, [myCart , userEmailID]);
 
 
     useEffect(() => {
@@ -126,44 +126,71 @@ function Profile() {
 
 
 
-                <div className='content-wrapper d-flex'>
-                    <Navbar></Navbar>
+            <div className='content-wrapper d-flex'>
 
-                    <div>
-                        <header className="d-flex justify-content-center py-3">
-                            <ul className="nav nav-pills">
-                                <li className="nav-item active">
-                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(1) }}>All Articles</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(2) }}>Men's</Link>
-                                </li>
 
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(3) }}>Women's</Link>
-                                </li>
 
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(4) }}>Electronics</Link>
-                                </li>
+                <header className="d-flex justify-content-center py-3">
+                    <Navbar />
+                    {/* <ul className="nav nav-pills">
+                        <li className="nav-item active">
+                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(1) }}>All Articles</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(2) }}>Men's</Link>
+                        </li>
 
-                                <li className="nav-item">
-                                    <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(5) }}>Others</Link>
-                                </li>
-                            </ul>
-                        </header>
-                    </div>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(3) }}>Women's</Link>
+                        </li>
 
-                    <div className='loader m-auto'>
-                        {
-                            isLoading && (
-                                <p className='m-0'><img src='loader.gif' width={60} height={60} alt='Loading...' /></p>
-                            )
-                        }
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(4) }}>Electronics</Link>
+                        </li>
 
-                        {!isLoading && <div className="row p-5 my-3">
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(5) }}>Others</Link>
+                        </li>
+                    </ul> */}
+                </header>
+
+                <div className='loader m-auto'>
+                    {
+                        isLoading && (
+                            <p className='m-0'><img src='loader.gif' width={60} height={60} alt='Loading...' /></p>
+                        )
+                    }
+
+                    {!isLoading &&  <div className='products-inner'>
+                    
+                        <div className="row p-5 my-2">
+
+                            <div className='category-header mt-0 mb-3 p-0'>
+                                <ul className="nav nav-pills d-flex justify-content-center">
+                                    <li className="nav-item active">
+                                        <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(1) }}>All Articles</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(2) }}>Men's</Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(3) }}>Women's</Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(4) }}>Electronics</Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(5) }}>Others</Link>
+                                    </li>
+                                </ul>
+                            </div>
+
                             {
                                 products.map(item => {
+                                    let quant = userCart.filter(obj => obj.product.id == item.id).map(obj => Number(obj.quantity));
                                     return (
                                         <div className="col-md-3 p-3" key={item.id}>
                                             <Products key={item.id}
@@ -171,7 +198,7 @@ function Profile() {
                                                 title={item.title}
                                                 image={item.image}
                                                 desc={item.description}
-                                                quantity={userCart.filter(obj => obj.product.id == item.id).map(obj => Number(obj.quantity))}
+                                                quantity={quant}
                                                 openProductDetailsModal={openProductDetailsModal}
                                                 addProductTocart={addProductTocart}
                                                 deleteProduct={deleteProduct}
@@ -179,11 +206,14 @@ function Profile() {
                                         </div>)
                                 })
                             }
-                        </div>}
+                        </div>
+                        
                     </div>
+                    }
                 </div>
+            </div>
 
-           { !isLoading &&(<footer>
+            {!isLoading && (<footer>
                 <SideBar style={{ position: "sticky", bottom: 0 }}
                     Name={user?.userData?.Name}
                     Age={user?.userData?.Age}

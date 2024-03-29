@@ -1,8 +1,8 @@
 export default function SideBar(props) {
     return (
         <>
-            <div className="sidebar-container">
-                 <p>@Copyright 2024</p>
+            <div className="bottom-footer">
+                 <p className="m-0">@Copyright 2024</p>
             </div>
         </>
     );

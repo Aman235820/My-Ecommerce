@@ -27,7 +27,7 @@ export default function MyCart() {
 
     useEffect(() => {
         fetchAllProducts();
-    }, [selectedProducts , userEmailID]);
+    }, [selectedProducts, userEmailID]);
 
     const columns = [
         {
@@ -45,11 +45,10 @@ export default function MyCart() {
         {
             name: "Quantitiy",
             selector: row => <span><button className="btn btn-secondary" style={{ padding: '0 8px' }} onClick={() => addProduct(row.id)}>+</button> {row.quantity} <button className="btn  btn-secondary" style={{ padding: '0 9px' }} onClick={() => deleteProduct(row.id)}>-</button></span>,
-            sortable: true
         },
         {
             name: "Amount",
-            selector: row => <span>₹{row.amount}</span>,
+            selector: row => "₹" + row.amount,
             sortable: true
         },
         {
@@ -122,7 +121,7 @@ export default function MyCart() {
     const proceedToBuy = (<>
         <ProceedToBuy productDetails={data}
             closeProccedtoBuyModal={closeProccedtoBuyModal}
-            userEmailID = {userEmailID}
+            userEmailID={userEmailID}
         ></ProceedToBuy>
     </>);
 
@@ -137,16 +136,18 @@ export default function MyCart() {
                 <div className='content-wrapper d-flex'>
                     <Navbar></Navbar>
 
-                    <div className="ms-auto" style={{marginRight: '20px'}}>
-                        <br/>
+                    <div className="ms-auto" style={{ marginRight: '20px' }}>
+                        <br />
                         <input type="text" className="search-bar" placeholder="Search..." onChange={searchItem}></input>
                     </div>
-                    <DataTable
-                        columns={columns}
-                        data={records}
-                        fixedHeader
-                        pagination
-                    />
+                    <div className="table-wrapper">
+                        <DataTable
+                            columns={columns}
+                            data={data}
+                            fixedHeader
+                            pagination
+                        />
+                    </div>
                     {data && data.length != 0 && (<div className="justify-content-end">
                         <button className="btn btn-danger btn-info justify-content-end" onClick={EraseCartItems}>Clear Cart</button>
                         <button className="btn btn-info m-3" onClick={OpenProceedToBuyModal}>Procced To Buy</button>

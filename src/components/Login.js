@@ -8,7 +8,10 @@ function Login() {
 
     const navigate = useNavigate();
     const { setStatus } = useContext(AuthContext);
-    const [loginDetails, setLoginDetails] = useState({});
+    const [loginDetails, setLoginDetails] = useState({
+        email : "abc@gmail.com",
+        password : "123"
+    });
     const [formValidation, setFormValidation] = useState({ login: true });
 
     const handleEmailChange = (e) => {
@@ -24,6 +27,7 @@ function Login() {
     }
 
     const handleSubmit = async (e) => {
+        console.log(loginDetails)
         e.preventDefault();
         const response = await GetData();
         let validCredentials = false;
@@ -55,12 +59,12 @@ function Login() {
                 <form>
                     <div className="form-group">
                         <label htmlFor="exampleInputEmail1">Email address</label>
-                        <input type="email" onChange={handleEmailChange} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                        <input type="email" defaultValue={"abc@gmail.com"} onChange={handleEmailChange} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
                     </div>
                     <br />
                     <div className="form-group">
                         <label htmlFor="exampleInputPassword1">Password</label>
-                        <input type="password" onChange={handlePasswordChange} className="form-control" id="exampleInputPassword1" placeholder="Password" />
+                        <input type="password" defaultValue={"123"} onChange={handlePasswordChange} className="form-control" id="exampleInputPassword1" placeholder="Password" />
                     </div>
                     <br />
                     {!formValidation.login && <span className="error">Invalid User</span>}
