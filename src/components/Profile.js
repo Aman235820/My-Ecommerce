@@ -132,26 +132,6 @@ function Profile() {
 
                 <header className="d-flex justify-content-center py-3">
                     <Navbar />
-                    {/* <ul className="nav nav-pills">
-                        <li className="nav-item active">
-                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(1) }}>All Articles</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(2) }}>Men's</Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(3) }}>Women's</Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(4) }}>Electronics</Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/profile" onClick={() => { setProductCategory(5) }}>Others</Link>
-                        </li>
-                    </ul> */}
                 </header>
 
                 <div className='loader m-auto'>
@@ -190,7 +170,6 @@ function Profile() {
 
                             {
                                 products.map(item => {
-                                    let quant = userCart.filter(obj => obj.product.id == item.id).map(obj => Number(obj.quantity));
                                     return (
                                         <div className="col-md-3 p-3" key={item.id}>
                                             <Products key={item.id}
@@ -198,7 +177,7 @@ function Profile() {
                                                 title={item.title}
                                                 image={item.image}
                                                 desc={item.description}
-                                                quantity={quant}
+                                                quantity={userCart.filter(obj => obj.product.id == item.id).map(obj => Number(obj.quantity))}
                                                 openProductDetailsModal={openProductDetailsModal}
                                                 addProductTocart={addProductTocart}
                                                 deleteProduct={deleteProduct}

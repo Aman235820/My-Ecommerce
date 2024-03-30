@@ -27,7 +27,6 @@ function Login() {
     }
 
     const handleSubmit = async (e) => {
-        console.log(loginDetails)
         e.preventDefault();
         const response = await GetData();
         let validCredentials = false;

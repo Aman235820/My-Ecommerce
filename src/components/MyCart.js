@@ -85,6 +85,7 @@ export default function MyCart() {
         const productData = cartProducts.map(mapProductsToData);
         function mapProductsToData(item) {
             let obj = {
+                uniqueId:crypto.randomUUID(),
                 id: item.product.id,
                 image: item.product.image,
                 name: item.product.title,

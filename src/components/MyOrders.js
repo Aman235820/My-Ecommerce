@@ -3,27 +3,27 @@ import DataTable from "react-data-table-component";
 import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 
-export default function MyOrders(){
-      const myOrders = useSelector((state)=>{
-           return state.masterData.placedOrders;
-      });
+export default function MyOrders() {
+    const myOrders = useSelector((state) => {
+        return state.masterData.placedOrders;
+    });
 
-      const [orderList , setOrdersList] = useState([]);
+    const [orderList, setOrdersList] = useState([]);
 
-      useEffect(()=>{
-           setMyOrdersData();
-      },[myOrders]);
+    useEffect(() => {
+        setMyOrdersData();
+    }, [myOrders]);
 
-      const setMyOrdersData = ()=>{
-             if(myOrders){
-                   const orderedItems = myOrders.map(obj => {
-                            return obj.articles;
-                   })
-                 setOrdersList(orderedItems.flat(1));
-             }
-      }
+    const setMyOrdersData = () => {
+        if (myOrders) {
+            const orderedItems = myOrders.map((obj) => {
+                return obj.articles;
+            })
+            setOrdersList(orderedItems.flat(1));
+        }
+    }
 
-      const columns = [
+    const columns = [
         {
             name: "Item",
             selector: row => <p className="p-2 m-0"> <img height="50px" width="50px" src={row.image} alt="img" /></p>
@@ -49,23 +49,23 @@ export default function MyOrders(){
     ];
 
 
-      return(
+    return (
 
         <>
-                <div className="dashboard-wrapper">
-                <div className='content-wrapper d-flex'>
-                    <Navbar></Navbar>
-        
+            <header className="d-flex justify-content-center py-3">
+                <Navbar />
+                <br /><br />
+            </header>
+            <div className="table-wrapper">
                 <DataTable
-                      data={orderList}
-                      columns={columns}
-                      pagination
+                    data={orderList}
+                    columns={columns}
+                    pagination
+                    fixedHeader
                 />
-
-                </div>
-                </div>
+            </div>
 
         </>
 
-      );
+    );
 }
