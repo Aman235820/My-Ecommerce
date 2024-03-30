@@ -132,8 +132,7 @@ export default function MyCart() {
 
             {showModal && proceedToBuy}
 
-            <div className="dashboard-wrapper">
-                <div className='content-wrapper d-flex'>
+    
                     <Navbar></Navbar>
 
                     <div className="ms-auto" style={{ marginRight: '20px' }}>
@@ -152,8 +151,7 @@ export default function MyCart() {
                         <button className="btn btn-danger btn-info justify-content-end" onClick={EraseCartItems}>Clear Cart</button>
                         <button className="btn btn-info m-3" onClick={OpenProceedToBuyModal}>Procced To Buy</button>
                     </div>)}
-                </div>
-            </div>
+          
 
         </>
     );
