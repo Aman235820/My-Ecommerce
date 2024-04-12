@@ -93,7 +93,7 @@ function Checkout() {
 
     const placeOrder = (data) => {
         if (proccedOnlineButton) {
-
+               alert("Sorry , server down for online payment !!")
         }
         else {
             let placedItemsObj = {
@@ -183,7 +183,7 @@ function Checkout() {
                                             <div className="form-group col-md-6">
                                                 <label className="mb-1">Payment Method</label>
                                                 <div className="form-check">
-                                                    <input className="form-check-input" type="radio" name="flexRadioDefault" defaultChecked
+                                                    <input className="form-check-input" type="radio" name="flexRadioDefault"
                                                         {...register("paymentMethod")}
                                                         value="online"
                                                         onChange={(e) => onPaymentMethodChange(e)}
@@ -192,7 +192,7 @@ function Checkout() {
                                                         Online Payment
                                                     </label>
                                                     <br />
-                                                    <input className="form-check-input" type="radio" name="flexRadioDefault"
+                                                    <input className="form-check-input" type="radio" name="flexRadioDefault" defaultChecked
                                                         {...register("paymentMethod")}
                                                         value="cod"
                                                         onChange={(e) => onPaymentMethodChange(e)}
