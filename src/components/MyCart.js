@@ -3,6 +3,7 @@ import SideBar from "./SideBar";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthProvider";
 import DataTable from "react-data-table-component";
+import ProfileModal from "./modals/ProfileModal";
 import { useDispatch, useSelector } from "react-redux";
 import { removeProduct, updateProductQuantity } from "../redux/slices/cartSlice";
 import { emptyUserCart } from "../redux/actions";
@@ -10,7 +11,7 @@ import ProceedToBuy from "./modals/ProceedtoBuyModal";
 
 export default function MyCart() {
 
-    const { user } = useContext(AuthContext);
+    const { user , showProfileModal } = useContext(AuthContext);
     const [data, setData] = useState([]);
     const [records, setRecords] = useState(data);
     const [showModal, setShowModal] = useState(false);
@@ -132,7 +133,8 @@ export default function MyCart() {
         <>
 
             {showModal && proceedToBuy}
-
+            {showProfileModal && <ProfileModal></ProfileModal>}
+            
     
                     <Navbar></Navbar>
 

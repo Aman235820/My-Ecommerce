@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import { useSelector } from "react-redux";
 
-export default function Navbar(props) {
+export default function Navbar() {
 
-    const { user, setUser, setStatus } = useContext(AuthContext);
+    const { user, setUser, setStatus ,openUserProfileModal} = useContext(AuthContext);
     const navigate = useNavigate();
 
     const cartItems = useSelector(state => state.cartItems);
@@ -22,7 +22,7 @@ export default function Navbar(props) {
     }
 
     const openProfile = ()=>{
-         props.openUserProfileModal();
+         openUserProfileModal();
     }
 
     const openSupportAlert = ()=>{

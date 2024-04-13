@@ -16,13 +16,12 @@ function Profile() {
 
     const dispatch = useDispatch();
 
-    const { user } = useContext(AuthContext);
+    const { user , showProfileModal } = useContext(AuthContext);
     const [productCategory, setProductCategory] = useState(1);
     const [products, setProducts] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [productModalID, setProductModalID] = useState(null);
     const [userCart, setUserCart] = useState(null);
-    const [showProfileModal , setShowProfileModal] = useState(false);
 
     const userEmailID = user?.userData?.Email;
 
@@ -122,23 +121,11 @@ function Profile() {
         }
     }
 
-    const openUserProfileModal = ()=>{
-           setShowProfileModal(true);
-    }
-
-    const closeUserProfileModal = ()=>{
-        setShowProfileModal(false);
- }
-
-    const profileModal = (
-        <ProfileModal user = {user?.userData} closeProfileModal = {closeUserProfileModal}></ProfileModal>
-    );
-
     return (
         <>
             {showModal && mainProductModal}
 
-            {showProfileModal && profileModal}
+            {showProfileModal && <ProfileModal></ProfileModal>}
 
 
             <div className='content-wrapper d-flex'>
@@ -146,7 +133,7 @@ function Profile() {
 
 
                 <header className="d-flex justify-content-center py-3">
-                    <Navbar openUserProfileModal = {openUserProfileModal} />
+                    <Navbar />
                 </header>
 
                 <div className='loader m-auto'>

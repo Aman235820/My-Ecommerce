@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { useContext, useState, useEffect } from 'react';
 import AuthContext from '../context/AuthProvider';
 import Navbar from './Navbar';
+import ProfileModal from './modals/ProfileModal';
 import { Bar, Line } from 'react-chartjs-2';
 import { Chart as CharJS } from 'chart.js/auto';
 
@@ -11,7 +12,7 @@ function AdminPanel() {
         return state.masterData.placedOrders;
     });
 
-    const { user } = useContext(AuthContext);
+    const { user , showProfileModal } = useContext(AuthContext);
 
     const [hasAdminAccess, setAdminAccess] = useState(false);
 
@@ -78,6 +79,10 @@ function AdminPanel() {
 
     return (
         <>
+            
+            {showProfileModal && <ProfileModal></ProfileModal>}
+            
+            
             <header className="d-flex justify-content-center py-3">
                 <Navbar />
             </header>

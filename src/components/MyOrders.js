@@ -1,7 +1,9 @@
 import { useSelector } from "react-redux";
 import DataTable from "react-data-table-component";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import ProfileModal from "./modals/ProfileModal";
+import AuthContext from "../context/AuthProvider";
 
 export default function MyOrders() {
     const myOrders = useSelector((state) => {
@@ -9,6 +11,7 @@ export default function MyOrders() {
     });
 
     const [orderList, setOrdersList] = useState([]);
+    const {showProfileModal} = useContext(AuthContext);
 
     useEffect(() => {
         setMyOrdersData();
@@ -52,6 +55,10 @@ export default function MyOrders() {
     return (
 
         <>
+
+            {showProfileModal && <ProfileModal></ProfileModal>}
+
+
             <header className="d-flex justify-content-center py-3">
                 <Navbar />
                 <br /><br />
