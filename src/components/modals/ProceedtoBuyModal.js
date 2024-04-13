@@ -50,6 +50,8 @@ export default function ProceedToBuy(props) {
         <>
             <div className="modal-wrapper">
                 <div className="modal-container" ref={closeRef}>
+                <img src='cross.png' alt='img' height="15px" width="15px" onClick={() => { props.closeProccedtoBuyModal() }} style={{ float: 'right', transition: 'transform 0.3s ease-in-out', cursor: 'pointer'}} /><br />
+                    
                     {
                         (props.productDetails).map(item => {
                             return (
@@ -62,7 +64,6 @@ export default function ProceedToBuy(props) {
                     <b>SubTotal<span>&lt;{props.productDetails.length} items&gt;</span> : ₹{subTotal}</b>
                     <br /><br />
                     <button className="btn btn-success m-3" onClick={handleCheckout}>Checkout</button>
-                    <button className="btn btn-dark" onClick={() => props.closeProccedtoBuyModal()}>Close Modal</button>
                 </div>
             </div>
 

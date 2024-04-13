@@ -6,6 +6,7 @@ import { GetProducts } from '../DataService';
 import Products from './Products';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductModal from './modals/ProductModal';
+import ProfileModal from './modals/ProfileModal';
 import { addProduct, updateProductQuantity, removeProduct } from '../redux/slices/cartSlice';
 import { useQuery } from "@tanstack/react-query";
 import { getAllProducts } from '../redux/slices/masterSlice';
@@ -21,6 +22,7 @@ function Profile() {
     const [showModal, setShowModal] = useState(false);
     const [productModalID, setProductModalID] = useState(null);
     const [userCart, setUserCart] = useState(null);
+    const [showProfileModal , setShowProfileModal] = useState(false);
 
     const userEmailID = user?.userData?.Email;
 
@@ -120,10 +122,23 @@ function Profile() {
         }
     }
 
+    const openUserProfileModal = ()=>{
+           setShowProfileModal(true);
+    }
+
+    const closeUserProfileModal = ()=>{
+        setShowProfileModal(false);
+ }
+
+    const profileModal = (
+        <ProfileModal user = {user?.userData} closeProfileModal = {closeUserProfileModal}></ProfileModal>
+    );
+
     return (
         <>
             {showModal && mainProductModal}
 
+            {showProfileModal && profileModal}
 
 
             <div className='content-wrapper d-flex'>
@@ -131,7 +146,7 @@ function Profile() {
 
 
                 <header className="d-flex justify-content-center py-3">
-                    <Navbar />
+                    <Navbar openUserProfileModal = {openUserProfileModal} />
                 </header>
 
                 <div className='loader m-auto'>

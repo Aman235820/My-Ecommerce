@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import { useSelector } from "react-redux";
 
-export default function Navbar() {
+export default function Navbar(props) {
 
     const { user, setUser, setStatus } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -19,6 +19,14 @@ export default function Navbar() {
         setUser(null);
         setStatus(false);
         navigate("/");
+    }
+
+    const openProfile = ()=>{
+         props.openUserProfileModal();
+    }
+
+    const openSupportAlert = ()=>{
+           alert("Our support staff will reach out to you shortly. Thank you for your patience !!")
     }
 
     return (
@@ -45,8 +53,8 @@ export default function Navbar() {
                                     <img src="userIcon.png" width="20px" height="20px" alt="user" className="userIcon" />{user?.userData?.Name}
                                 </span>
                                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><span className="dropdown-item">Profile</span></li>
-                                    <li><span className="dropdown-item">24x7 Customer Care</span></li>
+                                    <li><span className="dropdown-item" onClick={openProfile}>Profile</span></li>
+                                    <li><span className="dropdown-item" onClick={openSupportAlert}>24x7 Customer Care</span></li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li><span className="dropdown-item" onClick={handleLogout}>Logout</span></li>
                                 </ul>

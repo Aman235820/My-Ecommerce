@@ -12,7 +12,7 @@ function Checkout() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [proccedOnlineButton, setProceedOnlineButton] = useState(true);
+    const [proccedOnlineButton, setProceedOnlineButton] = useState(false);
     const [promocode, setPromocode] = useState("");
     const [totalAmount, setTotalAmont] = useState(0);
     const [userDetails, setUserDetails] = useState({});

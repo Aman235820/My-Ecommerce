@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom";
-import { useEffect, useState , useRef} from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 
 export default function ProductModal(props) {
@@ -16,7 +16,7 @@ export default function ProductModal(props) {
     useEffect(() => {
 
         document.body.style.overflowY = 'hidden';
-        document.addEventListener("mousedown" , handleCloseModal , true);
+        document.addEventListener("mousedown", handleCloseModal, true);
 
         return () => {
             document.body.style.overflowY = 'scroll';
@@ -32,10 +32,10 @@ export default function ProductModal(props) {
 
 
 
-    const handleCloseModal = (e)=>{
-         if( closeModalRef.current &&  !closeModalRef.current.contains(e.target)){
-              props.closeModal();
-         }
+    const handleCloseModal = (e) => {
+        if (closeModalRef.current && !closeModalRef.current.contains(e.target)) {
+            props.closeModal();
+        }
     }
 
 
@@ -43,12 +43,12 @@ export default function ProductModal(props) {
         <>
             <div className="modal-wrapper" >
                 <div className="modal-container" ref={closeModalRef}>
+                    <img src='cross.png' alt='img' height="15px" width="15px" onClick={() => { props.closeModal() }} style={{ float: 'right', transition: 'transform 0.3s ease-in-out', cursor: 'pointer' }} /><br />
                     <img src={myProduct.image} alt="img" height="150px" width="150px" className="modal-img" />
                     <b><p>{myProduct.title}</p></b>
                     <p>{myProduct.description}</p>
                     <b><p>Price : ₹{myProduct.price}</p></b>
                     <br />
-                    <button className='btn btn-dark' onClick={() => { props.closeModal() }} >Close Modal</button>
                 </div>
             </div>
         </>,
