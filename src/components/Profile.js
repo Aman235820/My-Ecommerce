@@ -127,10 +127,7 @@ function Profile() {
 
             {showProfileModal && <ProfileModal></ProfileModal>}
 
-
             <div className='content-wrapper d-flex'>
-
-
 
                 <header className="d-flex justify-content-center py-3">
                     <Navbar />

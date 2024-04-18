@@ -11,11 +11,16 @@ export default function MyOrders() {
     });
 
     const [orderList, setOrdersList] = useState([]);
+    const [searchList , setSearchList] = useState(orderList);
     const {showProfileModal} = useContext(AuthContext);
 
     useEffect(() => {
         setMyOrdersData();
     }, [myOrders]);
+
+    useEffect(()=>{
+        setSearchList(orderList);
+    },[orderList]);
 
     const setMyOrdersData = () => {
         if (myOrders) {
@@ -24,6 +29,13 @@ export default function MyOrders() {
             })
             setOrdersList(orderedItems.flat(1));
         }
+    }
+
+    const filterProductsOnSearch = (value) => {
+        const searchItems = orderList.filter(item => {
+            return item.name.toLowerCase().includes(value.toLowerCase());
+        });
+        setSearchList(searchItems);
     }
 
     const columns = [
@@ -60,12 +72,12 @@ export default function MyOrders() {
 
 
             <header className="d-flex justify-content-center py-3">
-                <Navbar />
+                <Navbar filterProductsOnSearch = {filterProductsOnSearch}/>
                 <br /><br />
             </header>
             <div className="table-wrapper">
                 <DataTable
-                    data={orderList}
+                    data={searchList}
                     columns={columns}
                     pagination
                     fixedHeader

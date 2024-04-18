@@ -1,14 +1,27 @@
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect , useState } from "react";
 import AuthContext from "../context/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 import secureLocalStorage from "react-secure-storage";
 import { useSelector } from "react-redux";
 
-export default function Navbar() {
 
-    const { user, setUser, setStatus ,openUserProfileModal} = useContext(AuthContext);
+export default function Navbar(props) {
+    
+    const location = useLocation();
+
+    useEffect(()=>{
+        
+        if(location.pathname === "/myCart" || location.pathname === "/myOrders"){
+            setLocation(true);
+        }
+        
+    },[location]);
+    
+    const { user, setUser, setStatus, openUserProfileModal } = useContext(AuthContext);
     const navigate = useNavigate();
+    
+    const [isCorrectLocation , setLocation] = useState(false);
 
     const cartItems = useSelector(state => state.cartItems);
 
@@ -21,12 +34,17 @@ export default function Navbar() {
         navigate("/");
     }
 
-    const openProfile = ()=>{
-         openUserProfileModal();
+    const openProfile = () => {
+        openUserProfileModal();
     }
 
-    const openSupportAlert = ()=>{
-           alert("Our support staff will reach out to you shortly. Thank you for your patience !!")
+    const openSupportAlert = () => {
+        alert("Our support staff will reach out to you shortly. Thank you for your patience !!")
+    }
+
+    const handleProductSearch = (e)=>{
+         let value = e.target.value;
+         props.filterProductsOnSearch(value);
     }
 
     return (
@@ -37,8 +55,11 @@ export default function Navbar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    {isCorrectLocation && <form className="col-lg-3 col-12 my-auto mx-3 search-bar">
+                        <input type="search" className="form-control" placeholder="Search products..." onChange={(e)=>{handleProductSearch(e)}} aria-label="Search"/>
+                    </form>}
                     <div className="ms-auto margin-auto">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                        <ul className="navbar-nav my-auto">
                             <li className="nav-item">
                                 <Link className="nav-link" aria-current="page" to="/profile">Home</Link>
                             </li>

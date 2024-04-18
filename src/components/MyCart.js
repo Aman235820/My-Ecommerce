@@ -104,9 +104,9 @@ export default function MyCart() {
         dispatch(emptyUserCart(userEmailID));
     }
 
-    const searchItem = (e) => {
+    const filterProductsOnSearch = (value) => {
         const searchItems = data.filter(item => {
-            return item.name.toLowerCase().includes(e.target.value.toLowerCase());
+            return item.name.toLowerCase().includes(value.toLowerCase());
         });
         setRecords(searchItems);
     }
@@ -136,16 +136,12 @@ export default function MyCart() {
             {showProfileModal && <ProfileModal></ProfileModal>}
             
     
-                    <Navbar></Navbar>
-
-                    <div className="ms-auto" style={{ marginRight: '20px' }}>
-                        <br />
-                        <input type="text" className="search-bar" placeholder="Search..." onChange={searchItem}></input>
-                    </div>
+                    <Navbar filterProductsOnSearch = {filterProductsOnSearch}/>
+                     <br/> <br/> <br/>
                     <div className="table-wrapper">
                         <DataTable
                             columns={columns}
-                            data={data}
+                            data={records}
                             fixedHeader
                             pagination
                         />
