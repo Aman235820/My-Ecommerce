@@ -54,6 +54,9 @@ function Login() {
 
     return (
         <div className="loginbox">
+            <figure>
+                <img src="cartImage.jpg" />
+            </figure>
             <div className="container border">
                 <form>
                     <div className="form-group">
